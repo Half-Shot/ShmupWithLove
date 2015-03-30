@@ -16,3 +16,7 @@ function Vector:initialize(x,y)
   self.x = x
   self.y = y
 end
+
+function Vector:IsZero()
+    return (self.x == 0 and self.y == 0)
+end

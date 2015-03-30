@@ -12,6 +12,7 @@ function Entity:initialize()
   self.hitbox_tl = Vector:new()
   self.hitbox_br = Vector:new()
   self.remove = false
+  self.hittable = true
 end
 
 function Entity:load()
@@ -22,5 +23,9 @@ function Entity:update(dt)
 end
 
 function Entity:draw()
+
+end
+
+function Entity:destroyed()
 
 end

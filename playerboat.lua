@@ -1,10 +1,7 @@
--- player.lua
-require 'projectile'
-require 'projPlayer'
-local class = require 'middleclass/middleclass'
-PlayerBoat = class('PlayerBoat',boat)
+--playerboat.lua
+playerboat = boat:new()
 
-function PlayerBoat:load()
+function playerboat:load()
 	self.spriteNormal = love.graphics.newImage("tPlayerBoat/ship_okay.png")
 	self.spriteDead = love.graphics.newImage("tPlayerBoat/ship_destr.png")
 	self.tCross = love.graphics.newImage("tCrosshair/cross.png")
@@ -33,8 +30,7 @@ function PlayerBoat:load()
 	amanager:add("plrripple",tRipple,tRippleFrames,30)
 end
 
-function PlayerBoat:update(dt)
-	--love.audio.setPosition( self.x, self.y, 0 )
+function playerboat:update(dt)
 	self.y = self.y + (self.yvel)*dt
 	self.x = self.x + (self.xvel)*dt
 	if self.y <= 900 then
@@ -76,7 +72,7 @@ function PlayerBoat:update(dt)
 	self.tGunRot = math.atan2(self.my - (self.attachmentOne.y + self.y),self.mx - (self.attachmentOne.x + self.x) ) - (math.pi / 2)
 end
 
-function PlayerBoat:draw()
+function playerboat:draw()
 	amanager:draw("plrripple",self.x - 11,self.y)
 	love.graphics.draw(self.curSpr,self.x,self.y)
 	love.graphics.draw(self.tGun,self.attachmentOne.x + self.x,self.attachmentOne.y + self.y,self.tGunRot,1,1,self.tGunOrigin.x,self.tGunOrigin.y)

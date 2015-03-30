@@ -3,74 +3,66 @@ require 'entity'
 require 'animman'
 require 'boat'
 require 'player'
+require 'hud'
 require 'water'
 require 'enemyboat'
+require 'entityman'
+require 'color'
+require 'shaders/fisheye'
+require 'fonts'
+require 'helper'
+require 'wavespawner'
 
 projectileSlot = 0
 projectileList = {}
-
-hittablesSlot = 0
-hittables = {}
-
+playerScore = 0
 function love.load()
   amanager = AnimationManager:new()
+  entityManager = EntityManager:new()
   love.window.setMode(1920,1080)
+  love.audio.setVolume(1)
+  canvas = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getWidth())
   love.mouse.setVisible(false)
-  love.graphics.setBackgroundColor(57,137,252)
+  love.graphics.setBackgroundColor(0,0,0)
   loadWater()
+  loadFonts()
+  playerboat = PlayerBoat:new()
   playerboat:load()
-  
+  entityManager:Add(playerboat)
   -- Generate blank textures
   blank32 = love.graphics.newImage(love.image.newImageData( 32, 32 ))
   blank64 = love.graphics.newImage(love.image.newImageData( 64, 64 ))
   blank128 = love.graphics.newImage(love.image.newImageData( 128, 128 ))
   blank256 = love.graphics.newImage(love.image.newImageData( 256, 256 ))
-  for i=0,20 do
-    local target = EnemyBoat:new()
-    target:load()
-    target.x = 80 * (i+1)
-    target.y = 50
-    hittables[hittablesSlot] = target
-    hittablesSlot = hittablesSlot + 1
-  end
 end
 
 
 function love.update(dt)
+  WaveSpawnerUpdate(dt)
   updateWater(dt)
   amanager:update(dt)
-  playerboat:update(dt)
-  
-	for k in pairs(hittables) do
-    hittables[k]:update(dt)
-    if hittables[k].remove then
-      table.remove(hittables,k)
-    end
-  end
-  
+  entityManager:Update(dt)
 	for k in pairs(projectileList) do
     projectileList[k]:update(dt)
     if projectileList[k].remove then
-      table.remove(projectileList,k)
+      projectileList[k] = nil
     end
   end
 end
 
 
 function love.draw()
+  canvas:clear()
+  love.graphics.setCanvas(canvas)
   drawWater()
+  entityManager:Draw()
   --Hud
-  --Gun One Cooldown
-  love.graphics.setColor(10,10,10)
-  love.graphics.rectangle( 'line', love.graphics.getWidth() / 15, (love.graphics.getHeight() / 10) * 9, 200, 30 )
-  love.graphics.setColor(150,40,40)
-  love.graphics.rectangle( 'fill', (love.graphics.getWidth() / 15) , (love.graphics.getHeight() / 10) * 9, 200 * (playerboat.GunOneCooldown / playerboat.GunOneCooldownPeroid), 30 )
-  love.graphics.setColor(255,255,255)
-	for k in pairs(hittables) do
-    hittables[k]:draw()
-  end
-  playerboat:draw()
+  drawHUD()
 	for k in pairs(projectileList) do
     projectileList[k]:draw()
   end
+  love.graphics.setCanvas()
+  love.graphics.setShader(sFisheye)
+  love.graphics.draw(canvas)
+  love.graphics.setShader()
 end

@@ -2,12 +2,13 @@ require 'shaders/water'
 
 -- Loading Water
 function loadWater()
-	tWaterFrames = 16
-	tWaterFrameSize = 256
-	tWaterScrollSpeed = 0.01
-	tWaterScroll = 0
-	tWater = amanager:loadFrames("tWater/caust_%03.0f.png",tWaterFrames,1)
-	amanager:add("water",tWater,tWaterFrames,15)
+  love.graphics.setBackgroundColor( 0, 152, 255)
+  tWaterFrames = 16
+  tWaterFrameSize = 256
+  tWaterScrollSpeed = 0.01
+  tWaterScroll = 0
+  tWater = amanager:loadFrames("tWater/caust_%03.0f.png",tWaterFrames,1)
+  amanager:add("water",tWater,tWaterFrames,15)
 end
 
 function updateWater(dt)
@@ -19,7 +20,7 @@ function updateWater(dt)
 end
 
 function drawWater()
-  love.graphics.setShader(sWater) --draw something here
+  love.graphics.setShader(sWater)
   sWater:send("scroll",tWaterScroll)
   for w=0,math.ceil(love.graphics.getWidth( ) / tWaterFrameSize) do
 	for h=0,math.ceil(love.graphics.getHeight( ) / tWaterFrameSize) do
