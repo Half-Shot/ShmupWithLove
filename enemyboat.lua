@@ -28,8 +28,6 @@ function EnemyBoat:load()
     self.hmpos = Vector:new(0)
     self.hmtimetoscale = 0.2
     self.hmscale = 0
-    self.maxhealth  = 10
-    self.health = self.maxhealth
     self.value = 250
     self.hitSound = love.audio.newSource( boatHitSound, "static" )
     self.deathSound = love.audio.newSource( boatDeathSound, "static" )
@@ -69,8 +67,13 @@ function EnemyBoat:update(dt)
             self.hmtext = 0
         end
     end
-    if self.y > love.graphics.getHeight() then
-        wsShipsAlive = wsShipsAlive - 1
+    if self.hitbox_tl.y + self.y > love.graphics.getHeight() then
+        if self.health > 0 then
+            wsSurvived = wsSurvived + 1
+            wsShipsAlive = wsShipsAlive - 1
+        end
+        self.remove = true
+        print("Ships Alive: "..wsShipsAlive)
     end
     self.turret.x = self.x + 25
     self.turret.y = self.y - 50

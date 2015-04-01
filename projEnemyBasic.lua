@@ -21,6 +21,7 @@ function ProjectileEnemyBasic:update(dt)
             yfits = (self.y >= y1 and self.y <= y2)
             
             if xfits and yfits then
+                hitCombo = 0
                 v.health = v.health - self.damage
                 self.remove = true
             end

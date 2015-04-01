@@ -1,0 +1,70 @@
+﻿#menuForm{
+	top:0%;
+	left:0%;
+	width:100%;
+	height:100%;
+	background-color:Gray;
+	opacity:0;
+}
+
+Button{
+	top:70%;
+	height:10%;
+	width:10%;
+	border-width:0px;
+	background-color:#444444;
+	color:White;
+}
+
+#versionInfo{
+	left:87%;
+}
+
+#SelectMissionButton{
+	left:45%;
+	top:20%;
+	width:10%;
+	height:5%;
+	content:"Local Game";
+}
+
+#OnlineMissionButton{
+	left:45%;
+	top:30%;
+	width:10%;
+	height:5%;
+	content:"Online Game";
+}
+
+#QuitButton{
+	left:45%;
+	top:70%;
+	width:10%;
+	height:5%;
+	content:"Quit Game";
+}
+
+#SettingsButton{
+	left:45%;
+	top:50%;
+	width:10%;
+	height:5%;
+	content:"Settings";
+}
+
+#AboutButton{
+	left:45%;
+	top:60%;
+	width:10%;
+	height:5%;
+	content:"About";
+}
+
+#ExtrasButton{
+	left:45%;
+	top:40%;
+	width:10%;
+	height:5%;
+	content:"Extras";
+}
+

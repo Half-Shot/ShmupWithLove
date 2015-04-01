@@ -3,7 +3,8 @@ local class = require 'middleclass/middleclass'
 Entity = class('Entity')
 
 function Entity:initialize()
-  self.health = 5
+  self.maxhealth = 10
+  self.health = self.maxhealth
   self.x = 0
   self.y = 0
   self.xvel = 0

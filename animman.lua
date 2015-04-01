@@ -1,4 +1,4 @@
---Animation Manager
+---Animation Manager
 require 'anim'
 local class = require 'middleclass/middleclass'
 AnimationManager = class('AnimationManager')

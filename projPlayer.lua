@@ -5,6 +5,7 @@ ProjectilePlayer = class('ProjectilePlayer',Projectile)
 
 function ProjectilePlayer:initialize()
     self.color = Color:new(200,60,60)
+    self.penetrating = false
 end
 
 function ProjectilePlayer:update(dt)
@@ -21,15 +22,20 @@ function ProjectilePlayer:update(dt)
                 yfits = (self.y >= y1 and self.y <= y2)
                 
                 if xfits and yfits then
-                    playerScore = playerScore + v.value * (self.damage / v.maxhealth)
-                    self.remove = true
+                    if self.penetrating == false then
+                        self.remove = true
+                    end
                     v.health = v.health - self.damage
                     if v.health <= 0 then
                         --v.deathSound:setPosition(v.x,v.y,0)
                         wsShipsAlive = wsShipsAlive - 1
+                        print("Ships Alive: "..wsShipsAlive)
                         love.audio.play(v.deathSound)
                     else
                         love.audio.play(v.hitSound)
+                        hitCombo = hitCombo + 1
+                        playerScore = playerScore + v.value * (self.damage / v.maxhealth) * (hitCombo / 10)
+                        hitComboScale = 0.75
                     end
                     
                     v.hmpos.x = self.x - x1
