@@ -8,7 +8,7 @@ function loadWater()
   tWaterScroll = 0
   tBgWater = love.graphics.newImage("tWater/waterbg.png")
   tWater = amanager:loadFrames("tWater/caust_%03.0f.png",tWaterFrames,1)
-  amanager:add("water",tWater,tWaterFrames,15)
+  amanager:add("water",tWater,tWaterFrames,30)
 end
 
 function updateWater(dt)

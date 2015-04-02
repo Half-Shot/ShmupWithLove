@@ -1,6 +1,7 @@
 -- player.lua
 require 'projectile'
 require 'projPlayer'
+require 'shaders/boatreflection'
 local class = require 'middleclass/middleclass'
 PlayerBoat = class('PlayerBoat',boat)
 
@@ -34,6 +35,7 @@ function PlayerBoat:load()
 	lights[7].G = 77
 	lights[7].B = 77
 	
+	self.tGunRot = (math.pi)
 	tRippleFrames = 5
 	tRipple = amanager:loadFrames("tPlayerBoat/ripple/%03.0f.png",tRippleFrames,0)
 	amanager:add("plrripple",tRipple,tRippleFrames,30)
@@ -71,7 +73,7 @@ function PlayerBoat:update(dt)
 	if self.GunTwoCooldown <= 0 and love.mouse.isDown("r") then
 		self.GunTwoCooldown = self.GunTwoCooldownPeroid
 		for i=-5,5 do
-			local proj = ProjectilePlayer:new()
+			local proj = ProjectileMissilePlayer:new()
 			proj.yvel = math.cos(-self.tGunRot + (i*0.1)) * self.GunTwoProjSpeed
 			proj.xvel = math.sin(-self.tGunRot + (i*0.1)) * self.GunTwoProjSpeed
 			proj.rot = self.tGunRot			proj.x = self.attachmentOne.x + self.x
@@ -81,8 +83,33 @@ function PlayerBoat:update(dt)
 			projectileSlot = projectileSlot + 1
 		end
 	end
-		
 	
+	--Check for collisons
+    for k,v in pairs(entityManager.entitylist) do
+        if v:isInstanceOf(EnemyBoat) then
+                x = v.hitbox_tl.x + v.x
+                y = v.hitbox_tl.y + v.y
+                
+                xfits = (x > self.x and x < self.x + self.hitbox_br.x)
+                yfits = (y > self.y - (self.hitbox_br.y / 2) and y < self.y + (self.hitbox_br.y / 2))
+                
+                if xfits then
+
+				end
+				
+				if yfits then
+				
+				end
+                
+                if xfits and yfits and v.health > 0 and self.hittable then
+					print("Impact!")
+					self.health = self.health - (v.health / 4) -- Take some damage
+					v.health = 0 --Kill it
+					wsShipsAlive = wsShipsAlive - 1
+                end
+        end
+    end
+    	
 	--Movement
 	if love.keyboard.isDown('a') then
 		self.x = self.x - 10
@@ -100,8 +127,9 @@ function PlayerBoat:update(dt)
 	lights[7].y = self.attachmentOne.y + self.y
 	
 	self.mx, self.my = love.mouse.getPosition( )
-	--self.tGunRot = math.atan2(self.my - (self.attachmentOne.y + self.y),self.mx - (self.attachmentOne.x + self.x) ) - (math.pi / 2)
-	self.tGunRot = (math.pi)
+	if love.mouse.isDown("m") then
+		self.tGunRot = math.atan2(self.my - (self.attachmentOne.y + self.y),self.mx - (self.attachmentOne.x + self.x) ) - (math.pi / 2)
+	end
 end
 
 function PlayerBoat:draw()

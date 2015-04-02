@@ -10,6 +10,8 @@ function loadHUD()
 end
 
 function drawHUD()
+
+  love.graphics.draw(hudCanvas)
   --Score
   love.graphics.setFont(scoreFont)
   love.graphics.print(string.format("%08.0f",displayedScore) , love.graphics.getWidth() / 20, love.graphics.getHeight() / 20,0,0.25,0.25)
@@ -44,10 +46,22 @@ end
 
 function updateHUD(dt)
     mx, my = love.mouse.getPosition( )
+    modi = 1
+    playerScore = math.floor(playerScore)
     if playerScore > displayedScore then
-        displayedScore = displayedScore + 10
+        if playerScore - displayedScore >= 100 then
+          modi = 10
+        elseif playerScore - displayedScore >= 1000 then
+          modi = 100
+        end
+        displayedScore = displayedScore + modi
     elseif playerScore < displayedScore then
-        displayedScore = displayedScore - 10
+        if playerScore - displayedScore <= -100 then
+          modi = 10
+        elseif playerScore - displayedScore <= -1000 then
+          modi = 100
+        end
+        displayedScore = displayedScore - modi
     end
     if hitComboScale > 0.25 then
       hitComboScale = hitComboScale - 0.25*dt

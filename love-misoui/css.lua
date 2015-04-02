@@ -103,7 +103,7 @@ function MUI_parseStatement(statement)
         atype = muiRuleType[6]
         value = value:sub(2,value:len() - 1)
     elseif theend == '%' then
-        value = tonumber(value)
+        value = tonumber(value:sub(1,value:len() - 1))/100
         atype = muiRuleType[4]
     elseif value:sub(value:len() - 1) == 'px' then
         value = tonumber(value:sub(1,value:len() - 2))

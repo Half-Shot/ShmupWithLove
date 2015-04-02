@@ -25,25 +25,30 @@ function ProjectilePlayer:update(dt)
                     if self.penetrating == false then
                         self.remove = true
                     end
-                    v.health = v.health - self.damage
-                    if v.health <= 0 then
-                        --v.deathSound:setPosition(v.x,v.y,0)
-                        wsShipsAlive = wsShipsAlive - 1
-                        print("Ships Alive: "..wsShipsAlive)
-                        love.audio.play(v.deathSound)
-                    else
-                        love.audio.play(v.hitSound)
-                        hitCombo = hitCombo + 1
-                        playerScore = playerScore + v.value * (self.damage / v.maxhealth) * (hitCombo / 10)
-                        hitComboScale = 0.75
+                    if v.health > 0 then
+                        v.hmpos.x = self.x - x1
+                        v.hmpos.y = self.y - y1
+                        v.hmtime = 0
+                        v.hmtext = v.hmtext + self.damage
+                        v.health = v.health - self.damage
+                        if v.health <= 0 then
+                            --v.deathSound:setPosition(v.x,v.y,0)
+                            wsShipsAlive = wsShipsAlive - 1
+                            love.audio.play(v.deathSound)
+                        else
+                            love.audio.play(v.hitSound)
+                            hitCombo = hitCombo + 1
+                            playerScore = playerScore + v.value * (self.damage / v.maxhealth) * (hitCombo / 10)
+                            hitComboScale = 0.75
+                        end
                     end
-                    
-                    v.hmpos.x = self.x - x1
-                    v.hmpos.y = self.y - y1
-                    v.hmtime = 0
-                    v.hmtext = v.hmtext + self.damage
                 end
             end
         end
     end
+end
+
+ProjectileMissilePlayer = class('ProjectilePlayer',ProjectilePlayer)
+function ProjectileMissilePlayer:draw()
+  love.graphics.draw(tProjMissilePlayer,self.x,self.y,self.rot,0.02,0.02)
 end

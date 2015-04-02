@@ -46,7 +46,7 @@ function WaveSpawnerUpdate(dt)
                 local target = EnemyBoat:new()
                 target:load()
                 target.x = 80 * (i+1)
-                target.y = 100
+                target.y = -100
                 target.turret.damage = DamageOutput
                 target.xvel = EvadeSpeed
                 target.yvel = MoveSpeed

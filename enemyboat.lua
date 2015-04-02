@@ -93,8 +93,10 @@ function EnemyBoat:draw()
         love.graphics.setShader()
     end
     self.turret:draw()
+    love.graphics.setCanvas(hudCanvas)
     if self.hmpos.x > 0 then
         love.graphics.setNewFont(72)
         love.graphics.print( self.hmtext , self.hmpos.x + self.x , self.hmpos.y + self.hitbox_tl.y + self.y,0,self.hmtext / 25, self.hmscale * (self.hmtext / 25))
     end
+    love.graphics.setCanvas(foreGround)
 end
