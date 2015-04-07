@@ -18,8 +18,6 @@ function CImage:SetImage(image)
     self.image = image
     self.scalex = self.width / image:getWidth()
     self.scaley = self.height / image:getHeight()
-    print(self.scalex)
-    print(self.scaley)
 end
 
 function CImage:ApplyRule(rule)

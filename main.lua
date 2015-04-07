@@ -16,11 +16,14 @@ require 'wavespawner'
 require 'menu'
 require 'light'
 require 'powerup'
+require 'level'
+require 'tileengine'
 GameVersionString = "ShmupWithLove v0.06"
 projectileSlot = 0
 projectileList = {}
 playerScore = 0
 gameState = 'menu' --menu,game,gameover
+selectedLevel = nil
 lights = {}
 
 function setupNewGame()
@@ -34,7 +37,6 @@ projectileSlot = 0
 end
 
 function love.load()
-
   --One off things
   waterDistort = love.math.newRandomGenerator( )
   amanager = AnimationManager:new()
@@ -54,6 +56,8 @@ function love.load()
   loadWater()
   loadFonts()
   loadMenu()
+  getLevels("levels")
+  selectedLevel = gameLevels
   loadHUD()
   for i=1,8 do
     lights[i] = Light:new(0,0,0,0)
@@ -98,6 +102,7 @@ function love.update(dt)
     WaveSpawnerUpdate(dt)
     updateHUD(dt)
     playerboat:update(dt)
+    tileUpdate()
     entityManager:Update(dt)
     for k in pairs(projectileList) do
       projectileList[k]:update(dt)
@@ -123,10 +128,10 @@ function love.draw()
     love.graphics.setCanvas(water)
     drawWater()
     love.graphics.setCanvas()
-    
     --Draw Entites (Not Dependant)
     foreGround:clear()
     love.graphics.setCanvas(foreGround)
+    tileDraw()
     entityManager:Draw()
     playerboat:draw()
     for _,k in pairs(projectileList) do

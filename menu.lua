@@ -16,6 +16,7 @@ end
 singlePlayerMissionCallback = function ()
   gameState = 'game'
   love.mouse.setVisible(false)
+  setLevel(selectedLevel)
   print("Starting new mission.")
   setupNewGame()
 end
