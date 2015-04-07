@@ -1,25 +1,60 @@
 --hud.lua
 displayedScore = 0
 hitCombo = 0
+shouldDrawFPS = true
+bestHitCombo = 0
 function loadHUD()
 	tCross = love.graphics.newImage("tCrosshair/cross.png")
 	tCrossHit = love.graphics.newImage("tCrosshair/cross-hit.png")
   tCurCross = tCross
 	crossScale = 0.15
   hitComboScale = 0.25
+  mx = 0
+  my = 0
+  
+  --Main Game UI
+  hudStyle = MUI_parseSheet("css/hud.css")
+  hudForm = MUIForm(love.graphics,"HUDForm")
+  
+  hudWeaponOneText = MUILabel(hudForm,"WeaponOneLabel","WeaponOneLabel",love.graphics.newFont(24))
+  table.insert(hudForm.children,hudWeaponOneText)
+  hudWeaponTwoText = MUILabel(hudForm,"WeaponTwoLabel","WeaponOneLabel",love.graphics.newFont(24))
+  table.insert(hudForm.children,hudWeaponTwoText)
+  hudWeaponThreeText = MUILabel(hudForm,"WeaponThreeLabel","WeaponOneLabel",love.graphics.newFont(24))
+  table.insert(hudForm.children,hudWeaponThreeText)
+  hudWeaponFourText = MUILabel(hudForm,"WeaponFourLabel","WeaponOneLabel",love.graphics.newFont(24))
+  table.insert(hudForm.children,hudWeaponFourText)
+  
+  
+  hudWeaponOneIcon = CImage(hudForm,"WeaponOneIcon")
+  table.insert(hudForm.children,hudWeaponOneIcon)
+  hudWeaponTwoIcon = CImage(hudForm,"WeaponTwoIcon")
+  table.insert(hudForm.children,hudWeaponTwoIcon)
+  hudWeaponThreeIcon = CImage(hudForm,"WeaponThreeIcon")
+  table.insert(hudForm.children,hudWeaponThreeIcon)
+  hudWeaponFourIcon = CImage(hudForm,"WeaponFourIcon")
+  table.insert(hudForm.children,hudWeaponFourIcon)
+  
+  hudScore = MUILabel(hudForm,"Score","--------",scoreFont)
+  hudScore.scalex = 0.25
+  hudScore.scaley = 0.25
+  
+  hudHitCounter = MUILabel(hudForm,"Hits",0,scoreFont)
+  table.insert(hudForm.children,hudScore)
+  table.insert(hudForm.children,hudHitCounter)
+  
+  hudFPS = MUILabel(hudForm,"FpsCounter",0)
+  table.insert(hudForm.children,hudFPS)
+  
+  hudForm:ApplyStylesheet(hudStyle)
+  
 end
 
 function drawHUD()
-
+  
   love.graphics.draw(hudCanvas)
-  --Score
-  love.graphics.setFont(scoreFont)
-  love.graphics.print(string.format("%08.0f",displayedScore) , love.graphics.getWidth() / 20, love.graphics.getHeight() / 20,0,0.25,0.25)
-  love.graphics.print(hitCombo, love.graphics.getWidth() / 20, love.graphics.getHeight() / 15,0,hitComboScale,hitComboScale)
-  love.graphics.setNewFont(12)
   
   --Hull
-  
   love.graphics.setColor(0,183,14)
   love.graphics.rectangle( 'fill', (love.graphics.getWidth() / 15) , (love.graphics.getHeight() / 10) * 8.5, 200 * (playerboat.health / playerboat.maxhealth), 30 )
   love.graphics.setColor(10,10,10)
@@ -28,42 +63,58 @@ function drawHUD()
   
   --Gun One
   love.graphics.setColor(150,40,40)
-  love.graphics.rectangle( 'fill', (love.graphics.getWidth() / 15) , (love.graphics.getHeight() / 10) * 9, 200 * (playerboat.GunOneCooldown / playerboat.GunOneCooldownPeroid), 30 )
+  love.graphics.rectangle( 'fill', 2*(love.graphics.getWidth() / 10) , (love.graphics.getHeight() / 10) * 9, 200 * (playerboat.GunOneCooldown / playerboat.GunOneCooldownPeroid), 30 )
   love.graphics.setColor(10,10,10)
-  love.graphics.rectangle( 'line', love.graphics.getWidth() / 15, (love.graphics.getHeight() / 10) * 9, 200, 30 )
+  love.graphics.rectangle( 'line', 2*(love.graphics.getWidth() / 10), (love.graphics.getHeight() / 10) * 9, 200, 30 )
   love.graphics.setColor(255,255,255)
   
-  --Gun One
+  --Gun Two
   love.graphics.setColor(150,40,40)
-  love.graphics.rectangle( 'fill', (love.graphics.getWidth() / 15) * 5 , (love.graphics.getHeight() / 10) * 9, 200 * (playerboat.GunTwoCooldown / playerboat.GunTwoCooldownPeroid), 30 )
+  love.graphics.rectangle( 'fill', 4*(love.graphics.getWidth() / 10) , (love.graphics.getHeight() / 10) * 9, 200 * (playerboat.GunTwoCooldown / playerboat.GunTwoCooldownPeroid), 30 )
   love.graphics.setColor(10,10,10)
-  love.graphics.rectangle( 'line', (love.graphics.getWidth() / 15) * 5, (love.graphics.getHeight() / 10) * 9, 200, 30 )
+  love.graphics.rectangle( 'line', 4*(love.graphics.getWidth() / 10), (love.graphics.getHeight() / 10) * 9, 200, 30 )
   love.graphics.setColor(255,255,255)
+  
+  --Gun Three
+  love.graphics.setColor(150,40,40)
+  love.graphics.rectangle( 'fill', 6*(love.graphics.getWidth() / 10) , (love.graphics.getHeight() / 10) * 9, 200 * (playerboat.GunThreeCooldown / playerboat.GunThreeCooldownPeroid), 30 )
+  love.graphics.setColor(10,10,10)
+  love.graphics.rectangle( 'line', 6*(love.graphics.getWidth() / 10), (love.graphics.getHeight() / 10) * 9, 200, 30 )
+  love.graphics.setColor(255,255,255)
+  
+  --Gun Four
+  love.graphics.setColor(150,40,40)
+  love.graphics.rectangle( 'fill', 8*(love.graphics.getWidth() / 10) , (love.graphics.getHeight() / 10) * 9, 200 * (playerboat.GunFourCooldown / playerboat.GunFourCooldownPeroid), 30 )
+  love.graphics.setColor(10,10,10)
+  love.graphics.rectangle( 'line', 8*(love.graphics.getWidth() / 10), (love.graphics.getHeight() / 10) * 9, 200, 30 )
+  love.graphics.setColor(255,255,255)
+  
   
   --Cursor
+  hudForm:Draw()
   love.graphics.draw(tCurCross,mx - (tCurCross:getWidth( ) * crossScale / 2) ,my - (tCurCross:getHeight( )  * crossScale / 2),0,crossScale,crossScale)
 end
 
 function updateHUD(dt)
-    mx, my = love.mouse.getPosition( )
-    modi = 1
-    playerScore = math.floor(playerScore)
-    if playerScore > displayedScore then
-        if playerScore - displayedScore >= 100 then
-          modi = 10
-        elseif playerScore - displayedScore >= 1000 then
-          modi = 100
-        end
-        displayedScore = displayedScore + modi
-    elseif playerScore < displayedScore then
-        if playerScore - displayedScore <= -100 then
-          modi = 10
-        elseif playerScore - displayedScore <= -1000 then
-          modi = 100
-        end
-        displayedScore = displayedScore - modi
-    end
-    if hitComboScale > 0.25 then
-      hitComboScale = hitComboScale - 0.25*dt
-    end
+  hudForm:Update(dt)
+  if hitCombo > bestHitCombo then
+    bestHitCombo = hitCombo
+  end
+  mx, my = love.mouse.getPosition( )
+  playerScore = math.floor(playerScore)
+  modi = 0
+  
+  diff = playerScore - displayedScore
+  
+  modi = diff / 60
+  
+  displayedScore = displayedScore + modi
+  if hitComboScale > 0.25 then
+    hitComboScale = hitComboScale - 0.25*dt
+  end
+  hudScore.text = string.format("%08.0f",displayedScore)
+  hudHitCounter.scalex = hitComboScale
+  hudHitCounter.scaley = hitComboScale
+  hudHitCounter.text = hitCombo
+  hudFPS.text =  love.timer.getFPS( ) .. " fps"
 end

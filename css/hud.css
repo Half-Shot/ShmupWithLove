@@ -1,0 +1,81 @@
+
+/* hud.css - Main Game HUD */
+
+Form{
+	top:0%;
+	left:0%;
+	width:100%;
+	height:100%;
+	background-color:White;
+	opacity:0;
+}
+
+
+#Hits{
+	left:5%;
+	top:7%;
+	content:"%HITS%";
+}
+
+
+#Score{
+	left:5%;
+	top:5%;
+	content:"%SCORE%";
+}
+
+#WeaponOneLabel{
+	left:20%;
+	bottom:15%;
+	content:"%WEAPONONE%";
+}
+
+#WeaponOneIcon{
+	left:20%;
+	bottom:20%;
+    width:4%;
+    height:5%;
+	content:"tWeapon/placeholder.jpg";
+}
+
+#WeaponTwoLabel{
+	left:40%;
+	bottom:15%;
+	content:"%WEAPONTWO%";
+}
+
+#WeaponTwoIcon{
+	left:40%;
+	bottom:20%;
+    width:4%;
+    height:5%;
+	content:"tWeapon/placeholder.jpg";
+}
+
+#WeaponThreeLabel{
+	left:60%;
+	bottom:15%;
+	content:"%WEAPONTHREE%";
+}
+
+#WeaponThreeIcon{
+	left:60%;
+	bottom:20%;
+    width:4%;
+    height:5%;
+	content:"tWeapon/placeholder.jpg";
+}
+
+#WeaponFourLabel{
+	left:80%;
+	bottom:15%;
+	content:"%WEAPONFOUR%";
+}
+
+#WeaponFourIcon{
+	left:80%;
+	bottom:20%;
+    width:4%;
+    height:5%;
+	content:"tWeapon/placeholder.jpg";
+}

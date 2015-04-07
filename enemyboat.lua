@@ -2,7 +2,6 @@
 require 'projectile'
 require 'turret'
 require 'shaders/hiteffect'
-local class = require 'middleclass/middleclass'
 EnemyBoat = class('EnemyBoat',boat)
 boatDeathSound = love.sound.newSoundData( "sHit/boatdeath1.ogg" )
 boatHitSound = love.sound.newSoundData( "sHit/metal_interaction1.wav" )
@@ -19,6 +18,9 @@ function EnemyBoat:load()
     self.evadetimeperiod = 1.5
     self.xvel = 90
     self.yvel = 90
+    self.sinking = false
+    self.sinkingOpacity = 1
+    self.sinkingSpeed = 0.5
     self.turret = Turret:new()
     self.turret:load()
     --Hitmarker
@@ -27,6 +29,7 @@ function EnemyBoat:load()
     self.hmtext = 0
     self.hmpos = Vector:new(0)
     self.hmtimetoscale = 0.2
+    self.itemtodrop = nil
     self.hmscale = 0
     self.value = 250
     self.hitSound = love.audio.newSource( boatHitSound, "static" )
@@ -42,18 +45,18 @@ function EnemyBoat:update(dt)
         self.evadetime = 0
     end
     self.evadetime = self.evadetime + dt
+    
     if self.health <= 0 then
         self.curSpr = self.spriteDead
         self.hittable = false
         self.yvel = 120
         self.xvel = 0
-        if self.y > love.graphics.getHeight() then
-            self.remove = true
-        end
+        self.sinking = true
     else
         self.turret.tGunRot = math.atan2(playerboat.y - self.y,playerboat.x - self.x ) - (math.pi / 2)
         self.turret:update(dt)
     end
+    
     if self.hmpos.x > 0 then
         self.hmtime = self.hmtime + dt
         if self.hmtext < 25 then
@@ -70,11 +73,16 @@ function EnemyBoat:update(dt)
     if self.hitbox_tl.y + self.y > love.graphics.getHeight() then
         if self.health > 0 then
             wsSurvived = wsSurvived + 1
-            wsShipsAlive = wsShipsAlive - 1
         end
         self.remove = true
-        print("Ships Alive: "..wsShipsAlive)
     end
+    if self.sinking then
+        if self.sinkingOpacity <= 0 then
+            self.remove = true
+        end
+        self.sinkingOpacity = self.sinkingOpacity - (self.sinkingSpeed * dt)
+    end
+    self.turret.sinkingOpacity = self.sinkingOpacity
     self.turret.x = self.x + 25
     self.turret.y = self.y - 50
 end
@@ -84,6 +92,7 @@ function EnemyBoat:draw()
         love.graphics.setShader(sHitEffect)
     end
     
+    love.graphics.setColor(255,255,255,255 * self.sinkingOpacity)
     love.graphics.draw(self.spriteDead,self.x,self.y,0,1,-1)
     love.graphics.setColor(255,255,255,255 * (self.health/self.maxhealth))
 	love.graphics.draw(self.spriteNormal,self.x,self.y,0,1,-1)

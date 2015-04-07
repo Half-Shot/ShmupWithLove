@@ -6,7 +6,7 @@ MUIForm = class('Form',MUIControl)
 function MUIForm:initialize(parent,id)
     MUIControl.initialize(self, parent,id)
     self.children = {}
-    self.type = "form"
+    self.type = "Form"
 end
 
 function MUIForm:ApplyStylesheet(stylesheet)
@@ -53,7 +53,7 @@ function MUIForm:Update(dt)
 end
 
 function MUIForm:Draw()
-  love.graphics.setColor(self.drawColor.R,self.drawColor.G,self.drawColor.B,self.opacity)
+  love.graphics.setColor(self.bgColor.R,self.bgColor.G,self.bgColor.B,self.opacity)
   love.graphics.rectangle("fill",self.x,self.y,self.width,self.height)
   love.graphics.setColor(255,255,255)
   for _,item in pairs(self.children) do

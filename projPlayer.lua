@@ -26,18 +26,27 @@ function ProjectilePlayer:update(dt)
                         self.remove = true
                     end
                     if v.health > 0 then
+                        hitCombo = hitCombo + 1
                         v.hmpos.x = self.x - x1
                         v.hmpos.y = self.y - y1
+                        pEnemyHit:setPosition( self.x, self.y )
+                        pEnemyHit:emit(self.damage)
                         v.hmtime = 0
                         v.hmtext = v.hmtext + self.damage
                         v.health = v.health - self.damage
                         if v.health <= 0 then
                             --v.deathSound:setPosition(v.x,v.y,0)
-                            wsShipsAlive = wsShipsAlive - 1
                             love.audio.play(v.deathSound)
+                            if v.itemtodrop ~= nil then
+                              local itemtodrop = v.itemtodrop:new()
+                              itemtodrop.target = playerboat
+                              itemtodrop.x = v.x
+                              itemtodrop.y = v.y
+                              itemtodrop:load()
+                              entityManager:Add(itemtodrop)
+                            end
                         else
                             love.audio.play(v.hitSound)
-                            hitCombo = hitCombo + 1
                             playerScore = playerScore + v.value * (self.damage / v.maxhealth) * (hitCombo / 10)
                             hitComboScale = 0.75
                         end
@@ -48,7 +57,7 @@ function ProjectilePlayer:update(dt)
     end
 end
 
-ProjectileMissilePlayer = class('ProjectilePlayer',ProjectilePlayer)
+ProjectileMissilePlayer = class('ProjectileMissilePlayer',ProjectilePlayer)
 function ProjectileMissilePlayer:draw()
   love.graphics.draw(tProjMissilePlayer,self.x,self.y,self.rot,0.02,0.02)
 end

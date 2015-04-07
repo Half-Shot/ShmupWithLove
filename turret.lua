@@ -10,10 +10,15 @@ function Turret:load()
 	self.cooldown = self.firerate
 	self.projspeed = 500
 	self.damage = 0
+	self.sinkingOpacity = 1
 end
 
 function Turret:update(dt)
-    self.tGunRot = math.atan2(playerboat.y - self.y,playerboat.x - self.x ) - (math.pi / 2)
+    --aiming
+    local aimx = playerboat.x + playerboat.spriteNormal:getWidth() / 2
+    local aimy = playerboat.y + playerboat.spriteNormal:getHeight() / 2
+    self.tGunRot = math.atan2(aimy - self.y,aimx - self.x ) - (math.pi / 2)
+    
     if self.cooldown <= 0 then
 	self.cooldown = 1/self.firerate
 	local proj = ProjectileEnemyBasic:new()
@@ -31,5 +36,7 @@ function Turret:update(dt)
 end
 
 function Turret:draw()
+    love.graphics.setColor(255,255,255,255 * self.sinkingOpacity)
 	love.graphics.draw(self.tGun,self.x,self.y,self.tGunRot,1,1,self.tGunOrigin.x,self.tGunOrigin.y)
+    love.graphics.setColor(255,255,255,255)
 end

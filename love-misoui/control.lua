@@ -13,7 +13,8 @@ function MUIControl:initialize(parent,id)
     self.y = 0
     self.width = 0
     self.height = 0
-    self.drawColor = UIColor:new(225,10,225)
+    self.bgColor = UIColor:new(225,10,225)
+    self.fgColor = UIColor:new(255,255,255)
     self.opacity = 255
 end
 
@@ -38,7 +39,13 @@ function MUIControl:ApplyRules(ruleset)
                 self.opacity = item.Value*255
             end
         elseif item.Name == "background-color" then
-            self.drawColor = item.Value           
+            self.bgColor.R = item.Value.R      
+            self.bgColor.G = item.Value.G    
+            self.bgColor.B = item.Value.B    
+        elseif item.Name == "color" then
+            self.fgColor.R = item.Value.R      
+            self.fgColor.G = item.Value.G    
+            self.fgColor.B = item.Value.B    
         elseif item.Name == "top" then
             if item.Type == muiRuleType[2] or item.Type == muiRuleType[3] then
                 self.y = item.Value
@@ -76,10 +83,9 @@ function MUIControl:ApplyRules(ruleset)
                 self.height = item.Value * self.parent:getHeight()
             end
         else
-            ApplyRule(item)
+            self:ApplyRule(item)
         end
     end
-    print(self.width)
 end
 
 function MUIControl:Update(dt)
@@ -88,7 +94,7 @@ end
 
 function MUIControl:Draw()
     --Fallback drawing method
-    love.graphics.setColor(self.drawColor.R,self.drawColor.G,self.drawColor.B,self.opacity)
+    love.graphics.setColor(self.bgColor.R,self.bgColor.G,self.bgColor.B,self.opacity)
     love.graphics.rectangle("fill",self.x,self.y,self.width,self.height)
     love.graphics.setColor(255,255,255)
 end

@@ -12,6 +12,18 @@ function EntityManager:Add(entity)
     return 
 end
 
+function EntityManager:CountOfType(classType,includesubclasses)
+    local count = 0
+    for _,ent in pairs(self.entitylist) do
+        if class.Object.isInstanceOf(ent, classType) then
+            count = count + 1
+        elseif includesubclasses and class.Object.isSubclassOf(classType, ent) then
+            count = count + 1
+        end
+    end
+    return count
+end
+
 function EntityManager:Remove(entity)
     index = -1
     for k, v in pairs(self.entitylist) do

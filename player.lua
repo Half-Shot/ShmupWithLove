@@ -5,6 +5,12 @@ require 'shaders/boatreflection'
 local class = require 'middleclass/middleclass'
 PlayerBoat = class('PlayerBoat',boat)
 
+function PlayerBoat:initialize()
+	Entity.initialize(self)
+    self.maxhealth = 20
+    self.health = self.maxhealth
+end
+
 function PlayerBoat:load()
 	self.spriteNormal = love.graphics.newImage("tPlayerBoat/ship_okay.png")
 	self.spriteDead = love.graphics.newImage("tPlayerBoat/ship_destr.png")
@@ -12,19 +18,33 @@ function PlayerBoat:load()
 	self.tGunOrigin = Vector:new(7,16)
 	
 	self.GunOneCooldownPeroid = 0.1
+	self.GunOneName = "Bsc. Bolt Laser"
 	self.GunOneCooldown = 0
 	self.GunOneProjSpeed = 400
 	self.GunOneProjDamage = 1
+	hudWeaponOneText.text = self.GunOneName
 	
+	self.GunTwoName = "Spread Bomber"
 	self.GunTwoCooldownPeroid = 4
 	self.GunTwoCooldown = 0
 	self.GunTwoProjSpeed = 600
 	self.GunTwoProjDamage = 3
+	hudWeaponTwoText.text = self.GunTwoName
+	
+	self.GunThreeName = "Empty Slot"
+	self.GunThreeCooldownPeroid = 4
+	self.GunThreeCooldown = 0
+	hudWeaponThreeText.text = self.GunThreeName
+	
+	self.GunFourName = "Empty Slot"
+	self.GunFourCooldownPeroid = 4
+	self.GunFourCooldown = 0
+	hudWeaponFourText.text = self.GunFourName
 	
 	self.attachmentOne = Vector:new(32,60)
 	self.curSpr = self.spriteNormal
 	self.xvel = 0
-	self.yvel = -50
+	self.yvel = -200
 	self.x = love.graphics.getWidth( ) / 2
 	self.y = (love.graphics.getHeight() / 5) * 5
     self.hitbox_tl.x = 0
@@ -45,7 +65,7 @@ function PlayerBoat:update(dt)
 	--love.audio.setPosition( self.x, self.y, 0 )
 	self.y = self.y + (self.yvel)*dt
 	self.x = self.x + (self.xvel)*dt
-	if self.y <= 900 then
+	if self.y <= 700 then
 		self.yvel = 0
 	end
 	
@@ -92,20 +112,10 @@ function PlayerBoat:update(dt)
                 
                 xfits = (x > self.x and x < self.x + self.hitbox_br.x)
                 yfits = (y > self.y - (self.hitbox_br.y / 2) and y < self.y + (self.hitbox_br.y / 2))
-                
-                if xfits then
-
-				end
-				
-				if yfits then
-				
-				end
-                
                 if xfits and yfits and v.health > 0 and self.hittable then
-					print("Impact!")
 					self.health = self.health - (v.health / 4) -- Take some damage
 					v.health = 0 --Kill it
-					wsShipsAlive = wsShipsAlive - 1
+					v.sinking = true
                 end
         end
     end
@@ -129,6 +139,18 @@ function PlayerBoat:update(dt)
 	self.mx, self.my = love.mouse.getPosition( )
 	if love.mouse.isDown("m") then
 		self.tGunRot = math.atan2(self.my - (self.attachmentOne.y + self.y),self.mx - (self.attachmentOne.x + self.x) ) - (math.pi / 2)
+	end
+	
+	if self.health < 1 then
+		gameState = 'gameover'
+		goscore.text = playerScore .. "pts"
+		godeaths.text = "You destroyed " .. (wsTotalSpawned - wsTotalSurvived) .. " objects"
+		if wsTotalSurvived == 0 then
+			gosurvivors.text = "There were *no* survivors."
+		else
+			gosurvivors.text = wsTotalSurvived .. " survived."
+		end
+		gocombo.text = "Your best hit combo was " .. bestHitCombo
 	end
 end
 

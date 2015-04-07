@@ -1,3 +1,4 @@
+class = require 'middleclass/middleclass'
 require 'vector'
 require 'entity'
 require 'animman'
@@ -14,18 +15,32 @@ require 'helper'
 require 'wavespawner'
 require 'menu'
 require 'light'
-GameVersionString = "ShmupWithLove v0.05"
+require 'powerup'
+GameVersionString = "ShmupWithLove v0.06"
 projectileSlot = 0
 projectileList = {}
 playerScore = 0
-gameState = 'menu'
+gameState = 'menu' --menu,game,gameover
 lights = {}
-waterDistort = love.math.newRandomGenerator( )
+
+function setupNewGame()
+  playerboat = PlayerBoat:new()
+  entityManager = EntityManager:new()
+  waveSpawnerLoad()
+  playerboat:load()
+  playerScore = 0
+  projectileList = {}
+projectileSlot = 0
+end
+
 function love.load()
-  --love.graphics.setBackgroundColor(255, 255, 255)
+
+  --One off things
+  waterDistort = love.math.newRandomGenerator( )
   amanager = AnimationManager:new()
   love.window.setMode(1920,1080)
   love.audio.setVolume(1)
+  --love.graphics.setBackgroundColor(255, 255, 255)
   --Horrible, only way of doing blur.
   reflectionBufferA = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
   reflectionBufferB = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
@@ -44,6 +59,12 @@ function love.load()
     lights[i] = Light:new(0,0,0,0)
   end
   check = love.graphics.newImage("tTest/check.jpg")
+  pEnemyHit = love.graphics.newParticleSystem(love.graphics.newImage("tEnemyBoat/chunk.png"), 32);
+  pEnemyHit:setParticleLifetime(0.5, 1.5); -- Particles live at least 2s and at most 5s.
+  pEnemyHit:setLinearAcceleration( -250, -250, 250, 250 )
+  pEnemyHit:setColors(255, 255, 255, 255, 255, 255, 255, 0); -- Fade to black.
+  pEnemyHit:setSizes( 0.25 )
+  pEnemyHit:setSpin( -math.pi, math.pi )
   --Sunlight
   lights[1].R = 187
   lights[1].G = 237
@@ -51,10 +72,6 @@ function love.load()
   lights[1].A = 225
   lights[1].x = 1920/2
   lights[1].y = 1080/2
-  playerboat = PlayerBoat:new()
-  playerboat:load()
-  entityManager = EntityManager:new()
-  entityManager:Add(playerboat)
   -- Generate blank textures
   blank32 = love.graphics.newImage(love.image.newImageData( 32, 32 ))
   blank64 = love.graphics.newImage(love.image.newImageData( 64, 64 ))
@@ -62,16 +79,25 @@ function love.load()
   blank256 = love.graphics.newImage(love.image.newImageData( 256, 256 ))
   blankMax = love.graphics.newImage(love.image.newImageData( love.graphics.getWidth(), love.graphics.getHeight() ))
   tProjMissilePlayer = love.graphics.newImage("tProjectiles/tMissile.png")
+  tPUPFixCrate = love.graphics.newImage("tPowerups/FixCrate.png")
+  tPUPCrate = love.graphics.newImage("tPowerups/Crate.png")
+  
 end
 
 
 function love.update(dt)
-  if gameState == 'game' then
-    sReflectionLayer:send("distort",dt * 0.2)
-    WaveSpawnerUpdate(dt)
-    updateWater(dt)
+  updateWater(dt)
     amanager:update(dt)
+    
+  if love.keyboard.isDown('p') then
+    playerboat.health = 0
+  end
+  if gameState == 'game' then
+    pEnemyHit:update(dt)
+    sReflectionLayer:send("distort",(dt * 0.2) / 4)
+    WaveSpawnerUpdate(dt)
     updateHUD(dt)
+    playerboat:update(dt)
     entityManager:Update(dt)
     for k in pairs(projectileList) do
       projectileList[k]:update(dt)
@@ -80,14 +106,17 @@ function love.update(dt)
       end
     end
   elseif gameState == 'menu' then
-    amanager:update(dt)
-    updateWater(dt)
     updateMenu(dt)
+  end
+  if gameState == 'gameover' then
+    updateHUD(dt)
+    sReflectionLayer:send("distort",dt * 0.2 / 4)
+    goForm:Update(dt)
   end
 end
 
 function love.draw()
-  if gameState == 'game' then
+  if gameState == 'game' or gameState == 'gameover' then
     hudCanvas:clear()
     --Draw Water (Not dependant)
     water:clear()
@@ -99,9 +128,11 @@ function love.draw()
     foreGround:clear()
     love.graphics.setCanvas(foreGround)
     entityManager:Draw()
-    for k in pairs(projectileList) do
-      projectileList[k]:draw()
+    playerboat:draw()
+    for _,k in pairs(projectileList) do
+      k:draw()
     end
+    love.graphics.draw(pEnemyHit,0,0)
     love.graphics.setCanvas()
     drawBlur()
     
@@ -119,12 +150,16 @@ function love.draw()
     love.graphics.setShader(sShadowMap)
     love.graphics.draw(foreGround)
     love.graphics.setShader()
-    
+    if gameState == 'gameover' then
+      goForm:Draw()
+    end
     drawHUD()
   elseif gameState == 'menu' then
     drawWater() -- Background
     drawMenu()
   end
+  
+  
 end
 
 
@@ -133,7 +168,7 @@ function drawBlur()
     love.graphics.setCanvas(reflectionBufferA)
     love.graphics.draw(foreGround)
     love.graphics.setShader(sReflectionLayer)
-    for i=0,6 do
+    for i=1,4 do
       reflectionBufferB:clear()
       love.graphics.setCanvas(reflectionBufferB)
       love.graphics.draw(reflectionBufferA)
