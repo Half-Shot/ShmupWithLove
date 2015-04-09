@@ -69,6 +69,10 @@ function PlayerBoat:update(dt)
 		self.yvel = 0
 	end
 	
+	--Check Tile Collision
+	if tileCheckCollision(self) then
+		self.health = self.health - 0.1
+	end
 	-- Gun 1
 	if self.GunOneCooldown > 0 then
 		self.GunOneCooldown = math.max(self.GunOneCooldown - dt,0)
@@ -121,16 +125,16 @@ function PlayerBoat:update(dt)
     end
     	
 	--Movement
-	if love.keyboard.isDown('a') then
+	if love.keyboard.isDown('a') and self.x > 10 then
 		self.x = self.x - 10
-	elseif love.keyboard.isDown('d') then
+	elseif love.keyboard.isDown('d') and self.x < love.graphics:getWidth() - 10 - self.spriteNormal:getWidth() then
 		self.x = self.x + 10
 	end
 	
 	
-	if love.keyboard.isDown('w') then
+	if love.keyboard.isDown('w') and self.y > 3.3  then
 		self.y = self.y - 3.3
-	elseif love.keyboard.isDown('s') then
+	elseif love.keyboard.isDown('s') and self.y < love.graphics:getHeight() - 3.3 - self.spriteNormal:getHeight() then
 		self.y = self.y + 3.3
 	end
 	lights[7].x = self.attachmentOne.x + self.x

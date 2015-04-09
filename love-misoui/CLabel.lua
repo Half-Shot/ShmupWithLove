@@ -31,7 +31,7 @@ function MUILabel:ApplyRules(ruleset)
         if self.fontfamily then
             self.font = love.graphics.newFont(self.fontfamily, self.fontsize)
         else
-            self.font = love.graphics.newFont(self.fontfamily, self.fontsize)
+            self.font = love.graphics.newFont(self.fontsize)
         end
     end
 end

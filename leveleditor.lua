@@ -5,14 +5,15 @@ end
 
 EditorLoadFile = function()
   fileLocation = editfilepath.text
-  editName,editAuthor,Level = loadLevel("levels/"..fileLocation..".swl")
+  nm,au,Level = loadLevel("levels/"..fileLocation..".swl")
   if Level == nil then
     --Try Save Directory
-    editName,editAuthor,Level = loadLevel(FILE_USERLEVELS .. "/"..fileLocation..".swl")
+    nm,au,Level = loadLevel(FILE_USERLEVELS .. "/"..fileLocation..".swl")
   end
-  
   if Level ~= nil then
     setLevel(Level)
+    editauthor.text = nm
+    editname.text = au
   else
     print("Couldn't find file.")
   end
@@ -20,7 +21,7 @@ end
 
 EditorSaveFile = function()
   fileLocation = FILE_USERLEVELS .. "/" .. editfilepath.text ..".swl"
-  saveLevel(fileLocation,Level,editName,editAuthor)
+  saveLevel(fileLocation,Level,editname.text,editauthor.text)
 end
 
 edscrollMap = function(a)
@@ -43,12 +44,18 @@ function editorLoad()
   local editsaveLevel = CButton(editorForm,"SaveLevel")
   editsaveLevel.clickfunction = EditorSaveFile
   local edittest = CButton(editorForm,"TestLevel")
+  local editback = CButton(editorForm,"BackToMenu")
+  editback.clickfunction = function() gameState = 'menu' end
   editfilepath = CTextbox(editorForm,"FilePath")
   local editfilepathl = MUILabel(editorForm,"FilePathLabel")
   editcords = MUILabel(editorForm,"MapCords")
   --Tools
   local editdraw = CButton(editorForm,"ToolDraw")
   local editfill = CButton(editorForm,"ToolFill")
+  local editauthorl = MUILabel(editorForm,"AuthorLabel")
+  local editnamel = MUILabel(editorForm,"NameLabel")
+  editauthor = CTextbox(editorForm,"Author")
+  editname = CTextbox(editorForm,"Name")
   
   local editmvup = CButton(editorForm,"MoveMapUp")
   local editmvdown = CButton(editorForm,"MoveMapDown")
@@ -75,6 +82,11 @@ function editorLoad()
   table.insert(editorForm.children,edittoggrid)
   table.insert(editorForm.children,editfilepath)
   table.insert(editorForm.children,editfilepathl)
+  table.insert(editorForm.children,editback)
+  table.insert(editorForm.children,editauthorl)
+  table.insert(editorForm.children,editnamel)
+  table.insert(editorForm.children,editauthor)
+  table.insert(editorForm.children,editname)
   --Simple Tile Bar
   for i,tile in pairs(tileset) do
     local tileSelect = CButton(editorForm,"TileSelectButton")

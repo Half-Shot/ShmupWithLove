@@ -9,3 +9,6 @@ function string.ends(String,End)
    return End=='' or string.sub(String,-string.len(End))==End
 end
 
+function math.clamp(low, n, high)
+   return math.min(math.max(low, n), high)
+end

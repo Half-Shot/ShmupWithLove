@@ -11,6 +11,11 @@ Form{
 }
 
 
+#FpsCounter{
+	left:0;
+	top:0;
+}
+
 #Hits{
 	left:5%;
 	top:7%;
@@ -35,7 +40,8 @@ Form{
 	bottom:20%;
     width:4%;
     height:5%;
-	content:"tWeapon/placeholder.jpg";
+    background-color:#FFFFFF;
+	content:"tProjectiles/tMissile.png";
 }
 
 #WeaponTwoLabel{
@@ -49,7 +55,8 @@ Form{
 	bottom:20%;
     width:4%;
     height:5%;
-	content:"tWeapon/placeholder.jpg";
+    background-color:#FFFFFF;
+	content:"tProjectiles/tMissile.png";
 }
 
 #WeaponThreeLabel{

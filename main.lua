@@ -36,6 +36,7 @@ function setupNewGame()
   playerScore = 0
   projectileList = {}
   projectileSlot = 0
+  tileSpeed = 1
 end
 
 function love.load()
@@ -60,6 +61,7 @@ function love.load()
   loadWater()
   loadFonts()
   loadTiles()
+  getLevels(FILE_USERLEVELS)
   getLevels("levels")
   loadMenu()
   editorLoad()
@@ -101,7 +103,7 @@ function love.update(dt)
   if gameState == 'game' then
     pEnemyHit:update(dt)
     sReflectionLayer:send("distort",(dt * 0.2) / 4)
-    WaveSpawnerUpdate(dt)
+    --WaveSpawnerUpdate(dt)
     updateHUD(dt)
     playerboat:update(dt)
     tileUpdate(dt)

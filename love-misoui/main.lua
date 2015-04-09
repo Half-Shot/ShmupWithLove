@@ -11,5 +11,7 @@ require 'love-misoui/CImage'
 require 'love-misoui/CTextbox'
 
 function love.textinput( text )
-    CurrentTextInput.text = CurrentTextInput.text .. text
+    if CurrentTextInput ~= nil then
+        CurrentTextInput.text = CurrentTextInput.text .. text
+    end
 end
