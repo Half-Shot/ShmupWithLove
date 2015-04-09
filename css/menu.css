@@ -14,10 +14,12 @@ Button{
 	border-width:0px;
 	background-color:#555555;
 	color:White;
+	font-family:"fonts/Roboto-Bold.ttf";
 }
 
 #versionInfo{
 	left:87%;
+	font-family:"fonts/Roboto-Medium.ttf";
 }
 
 #SelectMissionButton{
@@ -63,12 +65,11 @@ Button{
 	content:"About";
 }
 
-#ExtrasButton{
-	disabled:1;
+#EditorButton{
 	left:45%;
 	top:40%;
 	width:10%;
 	height:5%;
-	content:"Editor";
+	content:"Level Editor";
 }
 

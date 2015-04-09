@@ -3,7 +3,7 @@ require 'love-misoui/control'
 local class = require 'middleclass/middleclass'
 CClickable = class('CClickable',MUIControl)
 
-function CClickable:initialize(parent,id,text,font)
+function CClickable:initialize(parent,id)
     MUIControl.initialize(self, parent,id)
     self.type = "Clickable"
     self.hovered = false
@@ -11,6 +11,7 @@ function CClickable:initialize(parent,id,text,font)
     self.hoverfunction = nil
     self.clickfunction = nil
     self.pressedIn = false
+    self.clickvalue = nil
 end
 
 function CClickable:ApplyRule(rule)
@@ -34,7 +35,7 @@ function CClickable:Update(dt)
   end
   self.clicked = (love.mouse.isDown( 'l' ) == false) and self.pressedIn
   if self.clicked and self.clickfunction ~= nil then
-    self.clickfunction()
+    self.clickfunction(self.clickvalue)
   end
   
   self.pressedIn = love.mouse.isDown( 'l' ) and self.hovered

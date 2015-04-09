@@ -1,7 +1,6 @@
 --menu.lua
 
 require 'love-misoui/main'
-
 backToMenuCallback = function ()
     gameState = 'menu'
     love.mouse.setVisible(true)
@@ -16,8 +15,10 @@ end
 singlePlayerMissionCallback = function ()
   gameState = 'game'
   love.mouse.setVisible(false)
-  setLevel(selectedLevel)
   print("Starting new mission.")
+  file = selectedLevel[1] 
+  Name,Author,levelData = loadLevel(file)
+  setLevel(levelData)
   setupNewGame()
 end
 
@@ -33,8 +34,9 @@ function loadMenu()
   quitButton = CButton(form,"QuitButton")
   settingsButton = CButton(form,"SettingsButton")
   aboutButton = CButton(form,"AboutButton")
-  editorButton = CButton(form,"ExtrasButton")
+  editorButton = CButton(form,"EditorButton")
   quitButton.clickfunction = quitGameCallback
+  editorButton.clickfunction = function() gameState = 'leveleditor' end
   table.insert(form.children,version)
   table.insert(form.children,missionButton)
   table.insert(form.children,onlineMissionButton)

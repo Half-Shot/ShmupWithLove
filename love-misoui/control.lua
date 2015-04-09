@@ -16,6 +16,14 @@ function MUIControl:initialize(parent,id)
     self.bgColor = UIColor:new(225,10,225)
     self.fgColor = UIColor:new(255,255,255)
     self.opacity = 255
+    self.hasFocus = false
+end
+
+
+function MUIControl:focused()
+end
+
+function MUIControl:defocused()
 end
 
 function MUIControl:getWidth()
@@ -39,9 +47,9 @@ function MUIControl:ApplyRules(ruleset)
                 self.opacity = item.Value*255
             end
         elseif item.Name == "background-color" then
-            self.bgColor.R = item.Value.R      
-            self.bgColor.G = item.Value.G    
-            self.bgColor.B = item.Value.B    
+            self.bgColor.R = item.Value.R
+            self.bgColor.G = item.Value.G
+            self.bgColor.B = item.Value.B
         elseif item.Name == "color" then
             self.fgColor.R = item.Value.R      
             self.fgColor.G = item.Value.G    

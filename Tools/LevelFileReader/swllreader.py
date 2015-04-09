@@ -16,6 +16,7 @@ import struct
 # Data
         # Tile Data
             # +2 TileType
+            # +2 TileRotation
             # +2 EntityIndex (index of a defined entity)
 # +2 Magic Bytes again to denote end of file.
 
@@ -38,10 +39,11 @@ class LevelWriter:
         self.f.flush()
     def data(self,width,data):
         self.f.write(struct.pack("I", width))
-        self.f.write(struct.pack("I", 4*len(data)))
+        self.f.write(struct.pack("I", 6*len(data)))
         for tile in data: # Tuple with type,entity
                 self.f.write(struct.pack("H", tile[0]))
                 self.f.write(struct.pack("H", tile[1]))
+                self.f.write(struct.pack("H", tile[2]))
     def close(self):
         self.f.write(self.MAGICBYTES) # Write the end bytes
         self.f.close()
@@ -82,9 +84,11 @@ class LevelReader:
         for i in range(0,dataSize,4):
             tileType = self.f.read(2)
             tileType = struct.unpack("H",tileType)[0]
+            tileRot = self.f.read(2)
+            tileRot = struct.unpack("H",tileType)[0]
             tileEnt = self.f.read(2)
             tileEnt = struct.unpack("H",tileEnt)[0]
-            tiles.append((tileType,tileEnt))
+            tiles.append((tileType,tileRot,tileEnt))
             if tileEnt != 0:
                 entCount += 1
         bfr = self.f.read(2)
@@ -101,7 +105,7 @@ if __name__ == "__main__":
     
     parser.add_argument('filename', type=str, help='Filename to read/write to.')
     args = parser.parse_args()
-    width = 64
+    width = 32
     if args.w:
         writer = LevelWriter()
         writer.open(args.filename)
@@ -114,7 +118,7 @@ if __name__ == "__main__":
         else:
             author = args.a
         writer.header(name,author)
-        writer.data(width,[(0,0)]*width*2048)
+        writer.data(width,[(0,0,0)]*width*2048)
         writer.close()
     else: #Reading
         r = LevelReader()

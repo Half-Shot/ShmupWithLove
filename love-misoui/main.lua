@@ -8,4 +8,8 @@ require 'love-misoui/CLabel'
 require 'love-misoui/CClickable'
 require 'love-misoui/CButton'
 require 'love-misoui/CImage'
+require 'love-misoui/CTextbox'
 
+function love.textinput( text )
+    CurrentTextInput.text = CurrentTextInput.text .. text
+end

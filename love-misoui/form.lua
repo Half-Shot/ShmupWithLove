@@ -7,6 +7,17 @@ function MUIForm:initialize(parent,id)
     MUIControl.initialize(self, parent,id)
     self.children = {}
     self.type = "Form"
+    self.currentFocusItem = nil
+end
+
+function MUIForm:RequestFocus(item)
+    if self.currentFocusItem ~= nil then
+        self.currentFocusItem.hasFocus = false
+        self.currentFocusItem:defocused()
+    end
+    item.hasFocus = true
+    item:focused()
+    self.currentFocusItem = item
 end
 
 function MUIForm:ApplyStylesheet(stylesheet)

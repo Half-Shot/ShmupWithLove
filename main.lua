@@ -18,12 +18,14 @@ require 'light'
 require 'powerup'
 require 'level'
 require 'tileengine'
+require 'tiledefintions'
+require 'leveleditor'
+FILE_USERLEVELS = "custom/levels"
 GameVersionString = "ShmupWithLove v0.06"
 projectileSlot = 0
 projectileList = {}
 playerScore = 0
-gameState = 'menu' --menu,game,gameover
-selectedLevel = nil
+gameState = 'menu' --menu,game,gameover,leveleditor
 lights = {}
 
 function setupNewGame()
@@ -33,15 +35,17 @@ function setupNewGame()
   playerboat:load()
   playerScore = 0
   projectileList = {}
-projectileSlot = 0
+  projectileSlot = 0
 end
 
 function love.load()
   --One off things
+  love.filesystem.setIdentity( "ShmupWithLove" ) 
+  love.filesystem.createDirectory( FILE_USERLEVELS )
   waterDistort = love.math.newRandomGenerator( )
   amanager = AnimationManager:new()
   love.window.setMode(1920,1080)
-  love.audio.setVolume(1)
+  love.audio.setVolume(0.8)
   --love.graphics.setBackgroundColor(255, 255, 255)
   --Horrible, only way of doing blur.
   reflectionBufferA = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
@@ -55,9 +59,11 @@ function love.load()
   love.graphics.setBackgroundColor(0,0,0)
   loadWater()
   loadFonts()
-  loadMenu()
+  loadTiles()
   getLevels("levels")
-  selectedLevel = gameLevels
+  loadMenu()
+  editorLoad()
+  selectedLevel = gameLevels[1]
   loadHUD()
   for i=1,8 do
     lights[i] = Light:new(0,0,0,0)
@@ -91,18 +97,14 @@ end
 
 function love.update(dt)
   updateWater(dt)
-    amanager:update(dt)
-    
-  if love.keyboard.isDown('p') then
-    playerboat.health = 0
-  end
+  amanager:update(dt)
   if gameState == 'game' then
     pEnemyHit:update(dt)
     sReflectionLayer:send("distort",(dt * 0.2) / 4)
     WaveSpawnerUpdate(dt)
     updateHUD(dt)
     playerboat:update(dt)
-    tileUpdate()
+    tileUpdate(dt)
     entityManager:Update(dt)
     for k in pairs(projectileList) do
       projectileList[k]:update(dt)
@@ -110,6 +112,8 @@ function love.update(dt)
         projectileList[k] = nil
       end
     end
+  elseif gameState == 'leveleditor' then
+    editorUpdate(dt)
   elseif gameState == 'menu' then
     updateMenu(dt)
   end
@@ -159,6 +163,9 @@ function love.draw()
       goForm:Draw()
     end
     drawHUD()
+  elseif gameState == 'leveleditor' then
+    love.graphics.draw(foreGround,love.graphics.getWidth()/10,love.graphics.getHeight()/10,0,0.8,0.8)
+    editorDraw()
   elseif gameState == 'menu' then
     drawWater() -- Background
     drawMenu()

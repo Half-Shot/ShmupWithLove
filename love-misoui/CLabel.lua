@@ -9,15 +9,30 @@ function MUILabel:initialize(parent,id,text,font)
     self.text = text
     self.font = font
     self.scalex = 1
+    self.fontsize = 12
     self.scaley = 1
-    if self.font == nil then
-        self.font = love.graphics.newFont(12)
-    end
 end
 
 function MUILabel:ApplyRule(rule)
     if rule.Name == "content" then
         self.text = rule.Value
+    elseif rule.Name == "font-family" then
+        self.fontfamily = rule.Value
+    elseif rule.Name == "font-size" then
+        self.fontsize = rule.Value
+    else
+        CClickable.ApplyRule(self,rule)
+    end
+end
+
+function MUILabel:ApplyRules(ruleset)
+    MUIControl.ApplyRules(self,ruleset)
+    if self.font == nil then
+        if self.fontfamily then
+            self.font = love.graphics.newFont(self.fontfamily, self.fontsize)
+        else
+            self.font = love.graphics.newFont(self.fontfamily, self.fontsize)
+        end
     end
 end
 

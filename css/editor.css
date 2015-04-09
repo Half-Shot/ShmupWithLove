@@ -1,0 +1,98 @@
+/*editor.css*/
+
+Form{
+	top:0%;
+	left:0%;
+	width:100%;
+	height:100%;
+	background-color:LightBlue;
+	opacity:150;
+}
+
+Button{
+	top:0%;
+	height:3%;
+	width:5%;
+	background-color:#555555;
+	color:White;
+	opacity:255;
+	font-family:"fonts/Roboto-Bold.ttf";
+}
+
+#NewLevel{
+	left:0%;
+	content:"New Level";
+}
+
+#LoadLevel{
+	left:5%;
+	content:"Load Level";
+}
+
+#SaveLevel{
+	left:10%;
+	content:"Save Level";
+}
+
+#TestLevel{
+	left:15%;
+	content:"Test Level";
+	disabled:true
+}
+#FilePathLabel{
+	left:1%;
+	top:6%;
+	content:"Save/Load Path:";
+	color:White;
+	font-family:"fonts/Roboto-Bold.ttf";
+}
+
+#FilePath{
+	left:6%;
+	top:5.75%;
+	height:2%;
+	width:10%;
+	content:"%Path%";
+}
+
+#ToolDraw{
+	top:20%;
+	left:5%;
+	content:"Draw";
+}
+
+#ToolFill{
+	top:23%;
+	left:5%;
+	content:"Fill";
+}
+
+#TileSelectButton{
+	top:98%;
+	height:3%;
+	width:3%;
+}
+
+#MoveMapUp{
+	left:5%;
+	top:26%;
+	content:"Scroll Up";
+}
+
+#MoveMapDown{
+	left:5%;
+	top:29%;
+	content:"Scroll Down";
+}
+
+#MapCords{
+	right:5%;
+	top:5%;
+	content:"%X%Y";
+	font-family:"fonts/Roboto-Bold.ttf";
+}
+#ToggleGrid{
+	left:5%;
+	top:32%;
+	content:"Toggle Grid";
+}
