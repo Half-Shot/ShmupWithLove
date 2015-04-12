@@ -20,41 +20,6 @@ function MUIForm:RequestFocus(item)
     self.currentFocusItem = item
 end
 
-function MUIForm:ApplyStylesheet(stylesheet)
-  for _,rules in pairs(stylesheet) do
-    for _,item in pairs(self.children) do
-        if rules.declrType == muiDeclarationType[1] then --Type
-            if item.type == rules.selector then
-                item:ApplyRules(rules)
-            end
-        elseif rules.declrType == muiDeclarationType[2] then --Class
-            if item.class == rules.selector then
-                item:ApplyRules(rules)
-            end
-        else --Id
-            if item.id == rules.selector then
-                item:ApplyRules(rules)
-            end
-        end
-    end
-    
-    if rules.declrType == muiDeclarationType[1] then --Type
-        if self.type == rules.selector then
-            self:ApplyRules(rules)
-        end
-    elseif rules.declrType == muiDeclarationType[2] then --Class
-        if self.class == rules.selector then
-            self:ApplyRules(rules)
-        end
-    else --Id
-        if self.id == rules.selector then
-            self:ApplyRules(rules)
-        end
-    end
-    
-  end
-end
-
 function MUIForm:Update(dt)
   for _,item in pairs(self.children) do
     if item.shouldupdate then

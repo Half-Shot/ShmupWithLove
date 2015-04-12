@@ -12,6 +12,7 @@ function CClickable:initialize(parent,id)
     self.clickfunction = nil
     self.pressedIn = false
     self.clickvalue = nil
+    self.begunpress = false
 end
 
 function CClickable:ApplyRule(rule)
@@ -38,6 +39,7 @@ function CClickable:Update(dt)
     self.clickfunction(self.clickvalue)
   end
   
+  self.begunpress =  love.mouse.isDown( 'l' ) and self.pressedIn == false and self.hovered
   self.pressedIn = love.mouse.isDown( 'l' ) and self.hovered
   
 end

@@ -9,6 +9,7 @@ require 'love-misoui/CClickable'
 require 'love-misoui/CButton'
 require 'love-misoui/CImage'
 require 'love-misoui/CTextbox'
+require 'love-misoui/CPanel'
 
 function love.textinput( text )
     if CurrentTextInput ~= nil then

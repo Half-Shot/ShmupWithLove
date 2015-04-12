@@ -1,6 +1,6 @@
 -- level.lua
 gameLevels = {}
-levelVersion=1
+levelVersion=2
 function getLevels(dir)
 	files = love.filesystem.getDirectoryItems( dir )
 	for _,file in pairs(files) do
@@ -59,7 +59,7 @@ function loadLevel(filename,includedata)
 		print("The file is not of level format.")
 		return nil,nil,nil
 	end
-	version = pStructToInt(file:read(4))
+	version = pStructToShort(file:read(2))
 	headerlen = pStructToInt(file:read(4))
 	lvllen = pStructToInt(file:read(4))
 	LevelName = file:read(lvllen)
@@ -73,7 +73,7 @@ function loadLevel(filename,includedata)
 		Rows = {{}}
 		for i=1,DataSize/6 do
 			TileType = pStructToShort(file:read(2))
-			TileRot = pStructToShort(file:read(2))
+			TileRot = pStructToShort(file:read(2)) --Rotation in degrees
 			TileEnt = pStructToShort(file:read(2))
 			Rows[RowN][TileN] = {TileType,TileRot,TileEnt}
 			TileN = TileN + 1
@@ -83,6 +83,30 @@ function loadLevel(filename,includedata)
 				Rows[RowN] = {}
 			end
 		end
+		
+		--Entites
+		if version >= 2 then
+			blockSize = pStructToInt(file:read(4))
+			readSize = 0
+			while blockSize > readSize do
+				pointer = pStructToShort(file:read(2)) readSize = readSize + 2
+				propcount = pStructToShort(file:read(2)) readSize = readSize + 2
+				for i=1,propcount do
+					propsize = pStructToShort(file:read(2)) readSize = readSize + 2
+					proptype = pStructToShort(file:read(2)) readSize = readSize + 2
+					if proptype == 0 then
+						prop = pStructToShort(file:read(2)) readSize = readSize + 2
+					elseif proptype == 1 then
+						prop = pStructToInt(file:read(4)) readSize = readSize + 4
+					elseif proptype == 2 then --string
+						prop = file:read(propsize) readSize = readSize + propsize
+					else
+						print("Warning: Unknown property type for entity. Corruption possible or mismatched versions.(",proptype,")")
+					end
+				end
+			end
+		end
+		
 		bytes = file:read(2)
 		MagicOK = (string.byte(bytes) == 180 and string.byte(bytes,2) == 247)
 		if MagicOK == false then

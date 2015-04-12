@@ -20,12 +20,13 @@ require 'level'
 require 'tileengine'
 require 'tiledefintions'
 require 'leveleditor'
+require 'entdef'
 FILE_USERLEVELS = "custom/levels"
 GameVersionString = "ShmupWithLove v0.06"
 projectileSlot = 0
 projectileList = {}
 playerScore = 0
-gameState = 'menu' --menu,game,gameover,leveleditor
+gameState = 'menu' --menu,game,gameover,leveleditor,testlevel
 lights = {}
 
 function setupNewGame()
@@ -37,6 +38,13 @@ function setupNewGame()
   projectileList = {}
   projectileSlot = 0
   tileSpeed = 1
+  tilePosition = 0
+  tileRow = 3
+end
+
+function testLevel()
+  gameState = 'testlevel'
+  setupNewGame()
 end
 
 function love.load()
@@ -103,7 +111,7 @@ function love.update(dt)
   if gameState == 'game' then
     pEnemyHit:update(dt)
     sReflectionLayer:send("distort",(dt * 0.2) / 4)
-    --WaveSpawnerUpdate(dt)
+    WaveSpawnerUpdate(dt)
     updateHUD(dt)
     playerboat:update(dt)
     tileUpdate(dt)
@@ -113,6 +121,23 @@ function love.update(dt)
       if projectileList[k].remove then
         projectileList[k] = nil
       end
+    end
+  elseif gameState == 'testlevel' then
+    sReflectionLayer:send("distort",(dt * 0.2) / 4)
+    updateHUD(dt)
+    playerboat:update(dt)
+    tileUpdate(dt)
+    entityManager:Update(dt)
+    for k in pairs(projectileList) do
+      projectileList[k]:update(dt)
+      if projectileList[k].remove then
+        projectileList[k] = nil
+      end
+    end
+    if love.keyboard.isDown( 'escape' )then
+      gameState = 'leveleditor'
+     tileSpeed = 0
+     tilePosition = 0
     end
   elseif gameState == 'leveleditor' then
     editorUpdate(dt)
@@ -127,7 +152,7 @@ function love.update(dt)
 end
 
 function love.draw()
-  if gameState == 'game' or gameState == 'gameover' then
+  if gameState == 'game' or gameState == 'gameover' or gameState == 'testlevel' then
     hudCanvas:clear()
     --Draw Water (Not dependant)
     water:clear()

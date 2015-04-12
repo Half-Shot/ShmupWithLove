@@ -7,7 +7,7 @@ function MUIControl:initialize(parent,id)
     self.shouldupdate = true
     self.id = id
     self.class = ""
-    self.type = "NOTYPE"
+    self.type = "Base Control"
     self.parent = parent
     self.x = 0
     self.y = 0
@@ -17,6 +17,44 @@ function MUIControl:initialize(parent,id)
     self.fgColor = UIColor:new(255,255,255)
     self.opacity = 255
     self.hasFocus = false
+end
+
+function MUIControl:ApplyStylesheet(stylesheet)
+  if self.children == nil then
+    print("Stylesheets cannot be directly applied to " .. self.type)
+  end
+  for _,rules in pairs(stylesheet) do
+    for _,item in pairs(self.children) do
+        if rules.declrType == muiDeclarationType[1] then --Type
+            if item.type == rules.selector then
+                item:ApplyRules(rules)
+            end
+        elseif rules.declrType == muiDeclarationType[2] then --Class
+            if item.class == rules.selector then
+                item:ApplyRules(rules)
+            end
+        else --Id
+            if item.id == rules.selector then
+                item:ApplyRules(rules)
+            end
+        end
+    end
+    
+    if rules.declrType == muiDeclarationType[1] then --Type
+        if self.type == rules.selector then
+            self:ApplyRules(rules)
+        end
+    elseif rules.declrType == muiDeclarationType[2] then --Class
+        if self.class == rules.selector then
+            self:ApplyRules(rules)
+        end
+    else --Id
+        if self.id == rules.selector then
+            self:ApplyRules(rules)
+        end
+    end
+    
+  end
 end
 
 

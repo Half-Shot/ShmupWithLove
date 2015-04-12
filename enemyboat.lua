@@ -5,8 +5,8 @@ require 'shaders/hiteffect'
 EnemyBoat = class('EnemyBoat',boat)
 boatDeathSound = love.sound.newSoundData( "sHit/boatdeath1.ogg" )
 boatHitSound = love.sound.newSoundData( "sHit/metal_interaction1.wav" )
+EnemyBoat.static.name = "EnemyBoat"
 function EnemyBoat:load()
-    self.name = "EnemyBoat"
 	self.spriteNormal = love.graphics.newImage("tEnemyBoat/ship.png")
 	self.spriteDead = love.graphics.newImage("tEnemyBoat/ship_destroyed.png")
     self.curSpr = self.spriteNormal

@@ -5,8 +5,8 @@ import struct
 # Structure of a level file
 # =========================
 # 0-1 Magic Bytes that should always be 0xb4,0xf7
-# 2-5 Version of the file. 
-# 6-9 Length of the Header
+# 2-3 Version of the file. 
+# 4-7 Length of the Header
 # Header
     # 9-12 LevelNameLength
     # LevelName
@@ -76,7 +76,6 @@ class LevelWriter:
             data += struct.pack("H", len(propdata))
             data += struct.pack("H", 0)
             data += propdata
-        print(len(data))
         self.f.write(struct.pack("I", len(data)))
         self.f.write(data)
     def close(self):

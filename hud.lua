@@ -16,13 +16,13 @@ function loadHUD()
   hudStyle = MUI_parseSheet("css/hud.css")
   hudForm = MUIForm(love.graphics,"HUDForm")
   
-  hudWeaponOneText = MUILabel(hudForm,"WeaponOneLabel","WeaponOneLabel",love.graphics.newFont(24))
+  hudWeaponOneText = CLabel(hudForm,"WeaponOneLabel","WeaponOneLabel",love.graphics.newFont(24))
   table.insert(hudForm.children,hudWeaponOneText)
-  hudWeaponTwoText = MUILabel(hudForm,"WeaponTwoLabel","WeaponOneLabel",love.graphics.newFont(24))
+  hudWeaponTwoText = CLabel(hudForm,"WeaponTwoLabel","WeaponOneLabel",love.graphics.newFont(24))
   table.insert(hudForm.children,hudWeaponTwoText)
-  hudWeaponThreeText = MUILabel(hudForm,"WeaponThreeLabel","WeaponOneLabel",love.graphics.newFont(24))
+  hudWeaponThreeText = CLabel(hudForm,"WeaponThreeLabel","WeaponOneLabel",love.graphics.newFont(24))
   table.insert(hudForm.children,hudWeaponThreeText)
-  hudWeaponFourText = MUILabel(hudForm,"WeaponFourLabel","WeaponOneLabel",love.graphics.newFont(24))
+  hudWeaponFourText = CLabel(hudForm,"WeaponFourLabel","WeaponOneLabel",love.graphics.newFont(24))
   table.insert(hudForm.children,hudWeaponFourText)
   
   
@@ -35,15 +35,15 @@ function loadHUD()
   hudWeaponFourIcon = CImage(hudForm,"WeaponFourIcon")
   table.insert(hudForm.children,hudWeaponFourIcon)
   
-  hudScore = MUILabel(hudForm,"Score","--------",scoreFont)
+  hudScore = CLabel(hudForm,"Score","--------",scoreFont)
   hudScore.scalex = 0.25
   hudScore.scaley = 0.25
   
-  hudHitCounter = MUILabel(hudForm,"Hits",0,scoreFont)
+  hudHitCounter = CLabel(hudForm,"Hits",0,scoreFont)
   table.insert(hudForm.children,hudScore)
   table.insert(hudForm.children,hudHitCounter)
   
-  hudFPS = MUILabel(hudForm,"FpsCounter",0)
+  hudFPS = CLabel(hudForm,"FpsCounter",0)
   table.insert(hudForm.children,hudFPS)
   
   hudForm:ApplyStylesheet(hudStyle)

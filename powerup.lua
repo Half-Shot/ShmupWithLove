@@ -1,6 +1,6 @@
 --powerup.lua
 Powerup = class('Powerup',Entity)
-
+Powerup.static.name = "Powerup"
 function Powerup:initialize()
   self.x = 0
   self.y = 0
@@ -8,7 +8,6 @@ function Powerup:initialize()
   self.yvel = 80
   self.scalex = 0.25
   self.scaley = 0.25
-  self.name = "Powerup"
   self.remove = false
   self.target = nil
   self.sprite = tPUPCrate

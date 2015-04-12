@@ -66,6 +66,8 @@ function tileUpdate(dt)
 end
 
 function tileDraw()
+    local scaleX = 0
+    local scaleY = 0
 	if tileLevel == nil then
 		error("No tile level loaded")
 	end
@@ -80,7 +82,14 @@ function tileDraw()
                 tileImg = check
             end
             if tile[1] ~= 0 then
-                love.graphics.draw(tileImg,x,y + tilePosition,0,tileSizeX / tileImg:getWidth(),tileSizeY / tileImg:getHeight())
+		if tile[2] == 90 or tile[2] == 270 then
+		    scaleX = tileSizeY / tileImg:getHeight()
+		    scaleY = tileSizeX / tileImg:getWidth()
+		else
+		    scaleX = tileSizeX / tileImg:getWidth()
+		    scaleY = tileSizeY / tileImg:getHeight()
+		end
+                love.graphics.draw(tileImg,x + tileSizeX/2,y + tilePosition  + tileSizeY/2,math.rad(tile[2]),scaleX,scaleY,tileImg:getWidth()/2,tileImg:getHeight()/2)
             end
         end
     end

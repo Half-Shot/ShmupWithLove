@@ -6,7 +6,7 @@ function loadWater()
   tWaterFrameSize = 256
   tWaterScrollSpeedx = 0.00
   tWaterScrollx = 0
-  tWaterScrollSpeedy = 0.01
+  tWaterScrollSpeedy = 0.05
   tWaterScrolly = 0
   tBgWater = love.graphics.newImage("tWater/waterbg.png")
   tWater = amanager:loadFrames("tWater/caust_%03.0f.png",tWaterFrames,1)
@@ -14,6 +14,9 @@ function loadWater()
 end
 
 function updateWater(dt)
+
+  tWaterScrollSpeedy = tileSpeed * 0.01
+
   if tWaterScrollx < 1 then
 	tWaterScrollx = tWaterScrollx + tWaterScrollSpeedx
   else

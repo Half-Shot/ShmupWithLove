@@ -1,9 +1,9 @@
 --CLabel.lua
 require 'love-misoui/control'
 local class = require 'middleclass/middleclass'
-MUILabel = class('Form',MUIControl)
+CLabel = class('Form',MUIControl)
 
-function MUILabel:initialize(parent,id,text,font)
+function CLabel:initialize(parent,id,text,font)
     MUIControl.initialize(self, parent,id)
     self.type = "Label"
     self.text = text
@@ -13,7 +13,7 @@ function MUILabel:initialize(parent,id,text,font)
     self.scaley = 1
 end
 
-function MUILabel:ApplyRule(rule)
+function CLabel:ApplyRule(rule)
     if rule.Name == "content" then
         self.text = rule.Value
     elseif rule.Name == "font-family" then
@@ -25,7 +25,7 @@ function MUILabel:ApplyRule(rule)
     end
 end
 
-function MUILabel:ApplyRules(ruleset)
+function CLabel:ApplyRules(ruleset)
     MUIControl.ApplyRules(self,ruleset)
     if self.font == nil then
         if self.fontfamily then
@@ -36,7 +36,7 @@ function MUILabel:ApplyRules(ruleset)
     end
 end
 
-function MUILabel:Draw()
+function CLabel:Draw()
     prevFont = love.graphics.getFont()
     if self.font ~= nil then
         love.graphics.setFont(self.font)

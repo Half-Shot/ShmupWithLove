@@ -27,7 +27,7 @@ function loadMenu()
   love.mouse.setVisible(true)
   styMenu = MUI_parseSheet("css/menu.css")
   form = MUIForm(love.graphics,"menuForm")
-  version = MUILabel(form,"versionInfo",GameVersionString,nil)
+  version = CLabel(form,"versionInfo",GameVersionString,nil)
   missionButton = CButton(form,"SelectMissionButton")
   missionButton.clickfunction = singlePlayerMissionCallback
   onlineMissionButton = CButton(form,"OnlineMissionButton")
@@ -51,12 +51,12 @@ function loadMenu()
   --Game Over Screen UI
   goStyle = MUI_parseSheet("css/gameover.css")
   goForm = MUIForm(love.graphics,"gameOverForm")
-  gogameOverText = MUILabel(goForm,"gameOverText","%TITLE%",nil)
+  gogameOverText = CLabel(goForm,"gameOverText","%TITLE%",nil)
   
-  goscore = MUILabel(goForm,"gameOverScore",0,love.graphics.newFont(32))
-  godeaths = MUILabel(goForm,"gameOverDeaths",0,love.graphics.newFont(24))
-  gosurvivors = MUILabel(goForm,"gameOverSurvivors",0,love.graphics.newFont(24))
-  gocombo = MUILabel(goForm,"gameOverTopCombo",0,love.graphics.newFont(24))
+  goscore = CLabel(goForm,"gameOverScore",0,love.graphics.newFont(32))
+  godeaths = CLabel(goForm,"gameOverDeaths",0,love.graphics.newFont(24))
+  gosurvivors = CLabel(goForm,"gameOverSurvivors",0,love.graphics.newFont(24))
+  gocombo = CLabel(goForm,"gameOverTopCombo",0,love.graphics.newFont(24))
   
   goMenuButton = CButton(goForm,"MenuButton")
   goMenuButton.clickfunction = backToMenuCallback

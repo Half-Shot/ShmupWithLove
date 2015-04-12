@@ -2,7 +2,7 @@
 require 'projEnemyBasic'
 local class = require 'middleclass/middleclass'
 Turret = class('Turret',Entity)
-
+Turret.static.name = "Turret"
 function Turret:load()
 	self.tGun = love.graphics.newImage("tPlayerBoat/ship_gun_prim.png")
 	self.tGunOrigin = Vector:new(7,16)

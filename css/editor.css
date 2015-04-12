@@ -73,6 +73,12 @@ Button{
 	content:"Fill";
 }
 
+#ToolAddEntity{
+	top:26%;
+	left:5%;
+	content:"Entity";
+}
+
 #AuthorLabel{
 	top:20%;
 	right:9%;
@@ -109,13 +115,13 @@ Button{
 
 #MoveMapUp{
 	left:5%;
-	top:26%;
+	top:50%;
 	content:"Scroll Up";
 }
 
 #MoveMapDown{
 	left:5%;
-	top:29%;
+	top:53%;
 	content:"Scroll Down";
 }
 
@@ -125,8 +131,24 @@ Button{
 	content:"%X%Y";
 	font-family:"fonts/Roboto-Bold.ttf";
 }
+
+#EntityList{
+	top:35%;
+	right:9%;
+	height:45%;
+	width:8%;
+	background-color:Gray;
+	scroll-x:"hide";
+	scroll-y:"always";
+}
+
+#EntitySelectButton{
+	height:5%;
+	width:90%;
+}
+
 #ToggleGrid{
 	left:5%;
-	top:32%;
+	top:56%;
 	content:"Toggle Grid";
 }
