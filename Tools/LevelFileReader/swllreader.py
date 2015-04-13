@@ -20,8 +20,9 @@ import struct
             # +2 EntityIndex (index of a defined entity)
 #====version 2
 # +4 Entity Data Length
-# Entites
+# Entities
    # +2 Entity Pointer Index
+   # +2 Ent Type
    # +2 Entiy Prop Count
    # Entity Props
      # + 2 Prop Length
@@ -34,6 +35,7 @@ class DummyEntity:
     PropCount = 2
     Name = "DumbEnt"
     Value = 12345
+    Type = 0
 
 class LevelWriter:
     MAGICBYTES = bytes([0xb4,0xf7]) #MagicBytes
@@ -65,6 +67,7 @@ class LevelWriter:
         data = b''
         for ent in ents:
             data += struct.pack("H", ent.Pointer)
+            data += struct.pack("H", ent.Type)
             data += struct.pack("H", ent.PropCount)
             
             propdata = bytes(ent.Name,'utf-8')
@@ -140,12 +143,20 @@ class LevelReader:
         readSize = 0
         while blockLen > readSize:
             ent = {}
+            
             pointer = self.f.read(2)
             readSize += 2
             ent["pointer"] = struct.unpack("H",pointer)[0]
+            
+            
+            enttype = self.f.read(2)
+            readSize += 2
+            ent["type"] = struct.unpack("H",enttype)[0]
+            
             propcount = self.f.read(2)
             readSize += 2
             propcount = struct.unpack("H",propcount)[0]
+            
             ent["props"] = []
             for i in range(0,propcount):
                 proplen = self.f.read(2)
@@ -211,7 +222,7 @@ if __name__ == "__main__":
         ents = r.entitys
         print("Entity Data Found:")
         for ent in ents:
-            print("Ent " + str(ent["pointer"]) + ":")
+            print("Ent",ent["pointer"],"(type:",ent["type"],"):")
             for prop in ent["props"]:
                 print("\t" + str(prop))
         r.checkEnd()

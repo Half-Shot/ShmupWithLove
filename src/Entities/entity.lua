@@ -30,3 +30,7 @@ end
 function Entity:destroyed()
 
 end
+
+function Entity:ReadPropsTable(props)
+
+end

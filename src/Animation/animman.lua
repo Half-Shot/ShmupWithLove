@@ -1,5 +1,7 @@
 ---Animation Manager
-require 'anim'
+
+require (RootCodePath .. 'Animation/anim')
+
 local class = require 'middleclass/middleclass'
 AnimationManager = class('AnimationManager')
 

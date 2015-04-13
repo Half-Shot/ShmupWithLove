@@ -1,7 +1,6 @@
 -- player.lua
-require 'projectile'
-require 'projPlayer'
-require 'shaders/boatreflection'
+require (RootCodePath .. 'Entities/Projectiles/projPlayer')
+require (RootShadersPath .. 'boatreflection')
 local class = require 'middleclass/middleclass'
 PlayerBoat = class('PlayerBoat',boat)
 
@@ -12,9 +11,9 @@ function PlayerBoat:initialize()
 end
 
 function PlayerBoat:load()
-	self.spriteNormal = love.graphics.newImage("tPlayerBoat/ship_okay.png")
-	self.spriteDead = love.graphics.newImage("tPlayerBoat/ship_destr.png")
-	self.tGun = love.graphics.newImage("tPlayerBoat/ship_gun_prim.png")
+	self.spriteNormal = love.graphics.newImage( RootTexturePath .. "tPlayerBoat/ship_okay.png")
+	self.spriteDead = love.graphics.newImage( RootTexturePath .. "tPlayerBoat/ship_destr.png")
+	self.tGun = love.graphics.newImage( RootTexturePath .. "tPlayerBoat/ship_gun_prim.png")
 	self.tGunOrigin = Vector:new(7,16)
 	
 	self.GunOneCooldownPeroid = 0.1
@@ -57,7 +56,7 @@ function PlayerBoat:load()
 	
 	self.tGunRot = (math.pi)
 	tRippleFrames = 5
-	tRipple = amanager:loadFrames("tPlayerBoat/ripple/%03.0f.png",tRippleFrames,0)
+	tRipple = amanager:loadFrames( RootTexturePath .. "tPlayerBoat/ripple/%03.0f.png",tRippleFrames,0)
 	amanager:add("plrripple",tRipple,tRippleFrames,30)
 end
 

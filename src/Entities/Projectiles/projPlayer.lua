@@ -1,5 +1,5 @@
 --projPlayer.lua
-require 'projectile'
+require (RootCodePath .. 'Entities/Projectiles/projectile')
 local class = require 'middleclass/middleclass'
 ProjectilePlayer = class('ProjectilePlayer',Projectile)
 

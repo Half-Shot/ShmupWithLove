@@ -1,5 +1,5 @@
 -- turret.lua
-require 'projEnemyBasic'
+require (RootCodePath .. 'Entities/Projectiles/projEnemyBasic')
 local class = require 'middleclass/middleclass'
 Turret = class('Turret',Entity)
 Turret.static.name = "Turret"

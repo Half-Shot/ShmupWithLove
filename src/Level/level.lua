@@ -12,14 +12,14 @@ function getLevels(dir)
 	end
 end
 
-function saveLevel(filename,level,name,author)
+function saveLevel(filename,level,name,author,ents)
 	love.filesystem.write(filename,'')
 	file, errorstr = love.filesystem.newFile( filename, 'w' )
 	if errorstr then
 		error("An error occurred"..errorstr)
 	end
 	file:write(string.char(180,247)) --Magic bytes
-	file:write(IntToPStruct(levelVersion)) --Version number
+	file:write(ShortToPStruct(levelVersion)) --Version number
 	file:write(IntToPStruct(name:len() +author:len())) --Header len
 	file:write(IntToPStruct(name:len())) --Name len
 	file:write(name)
@@ -36,6 +36,34 @@ function saveLevel(filename,level,name,author)
 			file:write(ShortToPStruct(tile[3])) --Tile Entity
 		end
 	end
+	if levelVersion >= 2 then
+		entData = ""
+		for _,ent in pairs(ents) do
+			entData = entData .. ShortToPStruct(ents[1]) --Pointer
+			entData = entData .. ShortToPStruct(ents[2]) --Type
+			entData = entData .. ShortToPStruct(table.getn(ents[3])) --Props
+			for _,prop in ents[3] do
+				datatype = prop[2]
+				if prop[2] == 2 then --string
+					data = prop[1]
+					datalen = len(string.len(prop[1]))
+				elseif prop[2] == 0 then
+					data = ShortToPStruct(prop[1])
+					datalen = 2
+				elseif prop[2] == 0 then
+					data = IntToPStruct(prop[1])
+					datalen = 4
+				else
+					print("Unknown data type (",prop[2],")")
+				end
+				entData = entData .. ShortToPStruct(datalen)
+				entData = entData .. ShortToPStruct(datatype)
+				entData = entData .. data
+			end
+		end
+		file:write(IntToPStruct(string.len(entData)))
+		file:write(entData)
+	end
 	file:write(string.char(180,247)) --Ends with magic bytes
 	file:close()
 end
@@ -43,7 +71,7 @@ end
 function loadLevel(filename,includedata)
 	print("Loading " .. filename)
 	if includedata then
-	print("\t(Complete Load).")
+		print("\t(Complete Load).")
 	end
 	if includedata == nil then
 		includedata = true
@@ -51,19 +79,21 @@ function loadLevel(filename,includedata)
 	file, errorstr = love.filesystem.newFile( filename, 'r' )
 	if errorstr then
 		print("An error occurred"..errorstr)
-		return nil,nil,nil
+		return nil,nil,nil,nil
 	end
 	local bytes, err = file:read(2)
 	MagicOK = (string.byte(bytes) == 180 and string.byte(bytes,2) == 247)
 	if MagicOK == false then
 		print("The file is not of level format.")
-		return nil,nil,nil
+		return nil,nil,nil,nil
 	end
 	version = pStructToShort(file:read(2))
 	headerlen = pStructToInt(file:read(4))
 	lvllen = pStructToInt(file:read(4))
 	LevelName = file:read(lvllen)
 	Author = file:read(headerlen - lvllen)
+	local Ents = {}
+	local entitys
 	if includedata then
 		Width = pStructToInt(file:read(4))
 		DataSize = pStructToInt(file:read(4))
@@ -90,7 +120,9 @@ function loadLevel(filename,includedata)
 			readSize = 0
 			while blockSize > readSize do
 				pointer = pStructToShort(file:read(2)) readSize = readSize + 2
+				enttype = pStructToShort(file:read(2)) readSize = readSize + 2
 				propcount = pStructToShort(file:read(2)) readSize = readSize + 2
+				local props = {}
 				for i=1,propcount do
 					propsize = pStructToShort(file:read(2)) readSize = readSize + 2
 					proptype = pStructToShort(file:read(2)) readSize = readSize + 2
@@ -103,7 +135,9 @@ function loadLevel(filename,includedata)
 					else
 						print("Warning: Unknown property type for entity. Corruption possible or mismatched versions.(",proptype,")")
 					end
+					table.insert(props,{prop,type})
 				end
+			table.insert(Ents,{pointer,enttype,props})
 			end
 		end
 		
@@ -114,7 +148,7 @@ function loadLevel(filename,includedata)
 		end
 	end
 	file:close()
-	return LevelName, Author, Rows
+	return LevelName, Author, Rows, Ents
 end
 
 function pStructToShort(bytes)

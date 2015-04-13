@@ -1,10 +1,10 @@
 -- enemyboat.lua
-require 'projectile'
-require 'turret'
-require 'shaders/hiteffect'
+require (RootCodePath .. 'Entities/Projectiles/projectile')
+require (RootCodePath .. 'Entities/turret')
+require (RootShadersPath .. 'hiteffect')
 EnemyBoat = class('EnemyBoat',boat)
-boatDeathSound = love.sound.newSoundData( "sHit/boatdeath1.ogg" )
-boatHitSound = love.sound.newSoundData( "sHit/metal_interaction1.wav" )
+boatDeathSound = love.sound.newSoundData( RootSoundPath .. "sHit/boatdeath1.ogg" )
+boatHitSound = love.sound.newSoundData( RootSoundPath .. "sHit/metal_interaction1.wav" )
 EnemyBoat.static.name = "EnemyBoat"
 function EnemyBoat:load()
 	self.spriteNormal = love.graphics.newImage("tEnemyBoat/ship.png")

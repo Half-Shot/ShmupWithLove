@@ -8,12 +8,23 @@ function waveSpawnerLoad()
     wsTotalSurvived = 0
     wsTotalSpawned = 0
     wsTime = wsTimeBetweenWaves
-    wsMode = 'random'
+    wsMode = 'random'--random,map
     wsRNG = love.math.newRandomGenerator(os.time())
 end
 
-function loadWaveFile()
-
+function spawnEntByPointer(pointer,x,y)
+    --Entity Spawn
+    for _,ent in pairs(levelEnts) do
+        if ent[1] == pointer then 
+            EntType = EntityDefinition[ent[2]]
+            local worldent = EntType:new()
+            worldent.x = x
+            worldent.y = y
+            worldent:ReadPropsTable(ent[3])
+            entityManager:Add(worldent)
+            print("Spawned ",worldent.Name," from map.")
+        end
+    end
 end
 
 function countShips()
@@ -21,9 +32,9 @@ function countShips()
 end
 
 function WaveSpawnerUpdate(dt)
-    countShips()
-    if wsShipsAlive < 1 or wsTime > wsTimeBetweenWaves then
-        if wsMode == 'random' then
+    if wsMode == 'random' then
+        countShips()
+        if wsShipsAlive < 1 or wsTime > wsTimeBetweenWaves then
             --Stats
             wsTotalSurvived = wsTotalSurvived + wsSurvived
             if wsTime > 0 then
@@ -68,6 +79,9 @@ function WaveSpawnerUpdate(dt)
             end
             wsTime = 0
         end
+        wsTime = wsTime + dt
+    elseif wsMode == 'map' then
+        
     end
-    wsTime = wsTime + dt
+    
 end

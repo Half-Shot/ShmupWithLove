@@ -13,15 +13,25 @@ tilecolEdgeRight = 0
 tilecolEdgeTop = 0
 tilecolEdgeBottom = 0
 
-function setLevel(level)--name,author,rows
-	tileLevel = level
+function setLevel(level)
+    tileLevel = level
     tileTotalWidth = table.getn(level[1])
     tileLevelLength = table.getn(level)-1
-	tileSizeX = love.graphics:getWidth() / tileTotalWidth
-	tileSizeY = love.graphics:getHeight() / tileTotalWidth
+    tileSizeX = love.graphics:getWidth() / tileTotalWidth
+    tileSizeY = love.graphics:getHeight() / tileTotalWidth
     tileTotalHeight  = love.graphics:getHeight() / tileSizeY
-	tilePosition = 0
+    tilePosition = 0
     tileRow = 3
+    
+    --Spawn starting ents
+    for r=1,tileTotalWidth do
+	for c=1,tileTotalWidth do
+	    if tileLevel[r][c][2] ~= 0 then
+		spawnEntByPointer(tileLevel[r][c][2],tileSizeX*c,love.graphics:getHeight()-r*tileSizeY)
+	    end
+	end
+    end
+    
 end
 
 function tileCheckCollision(v)
@@ -55,13 +65,19 @@ function tileCheckCollision(v)
 end
 
 function tileUpdate(dt)
-	if tileLevel == nil then
-		error("No tile level loaded")
-	end
+    if tileLevel == nil then
+	    error("No tile level loaded")
+    end
     tilePosition = tilePosition + ((tileSpeed*tileSizeY)*dt)
     if tilePosition > tileSizeY then
         tileRow = tileRow + 1
         tilePosition = 0
+	for i,tile in pairs(tileLevel[tileRow+tileTotalHeight]) do
+	    if tile[2] ~= 0 then
+		--Spawn the ent.
+		spawnEntByPointer(tile[2],tileSizeX*i,0-tileBuffer*tileSizeY)
+	    end
+	end
     end
 end
 

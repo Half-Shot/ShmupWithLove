@@ -4,8 +4,8 @@ hitCombo = 0
 shouldDrawFPS = true
 bestHitCombo = 0
 function loadHUD()
-	tCross = love.graphics.newImage("tCrosshair/cross.png")
-	tCrossHit = love.graphics.newImage("tCrosshair/cross-hit.png")
+	tCross = love.graphics.newImage( RootTexturePath .."tCrosshair/cross.png")
+	tCrossHit = love.graphics.newImage( RootTexturePath .. "tCrosshair/cross-hit.png")
   tCurCross = tCross
 	crossScale = 0.15
   hitComboScale = 0.25

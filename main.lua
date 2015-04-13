@@ -1,26 +1,4 @@
-class = require 'middleclass/middleclass'
-require 'vector'
-require 'entity'
-require 'animman'
-require 'boat'
-require 'player'
-require 'hud'
-require 'water'
-require 'enemyboat'
-require 'entityman'
-require 'color'
-require 'shaders/shadowmap'
-require 'fonts'
-require 'helper'
-require 'wavespawner'
-require 'menu'
-require 'light'
-require 'powerup'
-require 'level'
-require 'tileengine'
-require 'tiledefintions'
-require 'leveleditor'
-require 'entdef'
+require 'include'
 FILE_USERLEVELS = "custom/levels"
 GameVersionString = "ShmupWithLove v0.06"
 projectileSlot = 0
@@ -28,7 +6,7 @@ projectileList = {}
 playerScore = 0
 gameState = 'menu' --menu,game,gameover,leveleditor,testlevel
 lights = {}
-
+levelEnts = {}
 function setupNewGame()
   playerboat = PlayerBoat:new()
   entityManager = EntityManager:new()
@@ -78,8 +56,8 @@ function love.load()
   for i=1,8 do
     lights[i] = Light:new(0,0,0,0)
   end
-  check = love.graphics.newImage("tTest/check.jpg")
-  pEnemyHit = love.graphics.newParticleSystem(love.graphics.newImage("tEnemyBoat/chunk.png"), 32);
+  check = love.graphics.newImage(RootTexturePath .. "tTest/check.jpg")
+  pEnemyHit = love.graphics.newParticleSystem(love.graphics.newImage( RootTexturePath .. "tEnemyBoat/chunk.png"), 32);
   pEnemyHit:setParticleLifetime(0.5, 1.5); -- Particles live at least 2s and at most 5s.
   pEnemyHit:setLinearAcceleration( -250, -250, 250, 250 )
   pEnemyHit:setColors(255, 255, 255, 255, 255, 255, 255, 0); -- Fade to black.
@@ -98,9 +76,9 @@ function love.load()
   blank128 = love.graphics.newImage(love.image.newImageData( 128, 128 ))
   blank256 = love.graphics.newImage(love.image.newImageData( 256, 256 ))
   blankMax = love.graphics.newImage(love.image.newImageData( love.graphics.getWidth(), love.graphics.getHeight() ))
-  tProjMissilePlayer = love.graphics.newImage("tProjectiles/tMissile.png")
-  tPUPFixCrate = love.graphics.newImage("tPowerups/FixCrate.png")
-  tPUPCrate = love.graphics.newImage("tPowerups/Crate.png")
+  tProjMissilePlayer = love.graphics.newImage( RootTexturePath .. "tProjectiles/tMissile.png")
+  tPUPFixCrate = love.graphics.newImage( RootTexturePath .. "tPowerups/FixCrate.png")
+  tPUPCrate = love.graphics.newImage( RootTexturePath .. "tPowerups/Crate.png")
   
 end
 
@@ -122,6 +100,8 @@ function love.update(dt)
         projectileList[k] = nil
       end
     end
+    --Spawning entitys
+    
   elseif gameState == 'testlevel' then
     sReflectionLayer:send("distort",(dt * 0.2) / 4)
     updateHUD(dt)

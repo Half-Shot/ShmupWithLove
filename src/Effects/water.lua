@@ -1,4 +1,4 @@
-require 'shaders/water'
+require (RootShadersPath .. 'water')
 
 -- Loading Water
 function loadWater()
@@ -8,8 +8,8 @@ function loadWater()
   tWaterScrollx = 0
   tWaterScrollSpeedy = 0.05
   tWaterScrolly = 0
-  tBgWater = love.graphics.newImage("tWater/waterbg.png")
-  tWater = amanager:loadFrames("tWater/caust_%03.0f.png",tWaterFrames,1)
+  tBgWater = love.graphics.newImage(RootTexturePath .. "tWater/waterbg.png")
+  tWater = amanager:loadFrames(RootTexturePath .. "tWater/caust_%03.0f.png",tWaterFrames,1)
   amanager:add("water",tWater,tWaterFrames,30)
 end
 

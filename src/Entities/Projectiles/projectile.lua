@@ -1,5 +1,5 @@
 -- projectile.lua
-require 'shaders/projbolt'
+require (RootShadersPath .. 'projbolt')
 local class = require 'middleclass/middleclass'
 Projectile = class('Projectile',Entity)
 

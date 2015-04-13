@@ -21,7 +21,7 @@ end
 
 EditorSaveFile = function()
   fileLocation = FILE_USERLEVELS .. "/" .. editfilepath.text ..".swl"
-  saveLevel(fileLocation,Level,editname.text,editauthor.text)
+  saveLevel(fileLocation,Level,editname.text,editauthor.text,levelEnts)
 end
 
 edscrollMap = function(a)

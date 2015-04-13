@@ -65,7 +65,6 @@ function MUI_parseCSS(sourceCss)
             end
             
             i = openBracketIndex + 1
-            print(declrType,selector)
             currentRuleset = Ruleset:new(declrType,selector)
             state = muiCSSState[2]
         elseif state == muiCSSState[2] then

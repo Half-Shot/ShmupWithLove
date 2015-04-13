@@ -1,4 +1,4 @@
---menu.lua
+--mainmenu.lua
 
 require 'love-misoui/main'
 backToMenuCallback = function ()
@@ -17,9 +17,10 @@ singlePlayerMissionCallback = function ()
   love.mouse.setVisible(false)
   print("Starting new mission.")
   file = selectedLevel[1] 
-  Name,Author,levelData = loadLevel(file)
+  Name,Author,levelData,levelEnts = loadLevel(file)
   setLevel(levelData)
   setupNewGame()
+  wsMode = 'map'
 end
 
 

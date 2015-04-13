@@ -38,10 +38,10 @@ Form{
 #WeaponOneIcon{
 	left:20%;
 	bottom:20%;
-    width:4%;
-    height:5%;
-    background-color:#FFFFFF;
-	content:"tProjectiles/tMissile.png";
+	width:4%;
+	height:5%;
+	background-color:#FFFFFF;
+	content:"textures/tProjectiles/tMissile.png";
 }
 
 #WeaponTwoLabel{
@@ -53,10 +53,10 @@ Form{
 #WeaponTwoIcon{
 	left:40%;
 	bottom:20%;
-    width:4%;
-    height:5%;
-    background-color:#FFFFFF;
-	content:"tProjectiles/tMissile.png";
+	width:4%;
+	height:5%;
+	background-color:#FFFFFF;
+	content:"textures/tProjectiles/tMissile.png";
 }
 
 #WeaponThreeLabel{
@@ -68,9 +68,9 @@ Form{
 #WeaponThreeIcon{
 	left:60%;
 	bottom:20%;
-    width:4%;
-    height:5%;
-	content:"tWeapon/placeholder.jpg";
+	width:4%;
+	height:5%;
+	content:"textures/tWeapon/placeholder.jpg";
 }
 
 #WeaponFourLabel{
@@ -82,7 +82,7 @@ Form{
 #WeaponFourIcon{
 	left:80%;
 	bottom:20%;
-    width:4%;
-    height:5%;
-	content:"tWeapon/placeholder.jpg";
+	width:4%;
+	height:5%;
+	content:"textures/tWeapon/placeholder.jpg";
 }
