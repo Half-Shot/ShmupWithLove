@@ -14,6 +14,7 @@ function Entity:initialize()
   self.hitbox_br = Vector:new()
   self.remove = false
   self.hittable = true
+  
 end
 
 function Entity:load()

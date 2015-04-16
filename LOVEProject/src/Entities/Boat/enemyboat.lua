@@ -5,10 +5,12 @@ require (RootShadersPath .. 'hiteffect')
 EnemyBoat = class('EnemyBoat',boat)
 boatDeathSound = love.sound.newSoundData( RootSoundPath .. "sHit/boatdeath1.ogg" )
 boatHitSound = love.sound.newSoundData( RootSoundPath .. "sHit/metal_interaction1.wav" )
+tEnemyBoatNorm = love.graphics.newImage(RootTexturePath .. "tEnemyBoat/ship.png")
+tEnemyBoatDead = love.graphics.newImage(RootTexturePath .."tEnemyBoat/ship_destroyed.png")
 EnemyBoat.static.name = "EnemyBoat"
 function EnemyBoat:load()
-	self.spriteNormal = love.graphics.newImage("tEnemyBoat/ship.png")
-	self.spriteDead = love.graphics.newImage("tEnemyBoat/ship_destroyed.png")
+	self.spriteNormal = tEnemyBoatNorm
+	self.spriteDead = tEnemyBoatDead
     self.curSpr = self.spriteNormal
     self.hitbox_tl.x = 0
     self.hitbox_tl.y = -self.spriteNormal:getHeight()

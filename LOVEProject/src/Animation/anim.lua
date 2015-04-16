@@ -1,4 +1,3 @@
-local class = require 'middleclass/middleclass'
 Animation = class('Animation')
 function Animation:initialize(frames,framecount,framerate,starton)
 	self.frames = frames

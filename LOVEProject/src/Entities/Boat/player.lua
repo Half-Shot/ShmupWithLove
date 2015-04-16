@@ -1,7 +1,6 @@
 -- player.lua
 require (RootCodePath .. 'Entities/Projectiles/projPlayer')
 require (RootShadersPath .. 'boatreflection')
-local class = require 'middleclass/middleclass'
 PlayerBoat = class('PlayerBoat',boat)
 
 function PlayerBoat:initialize()
@@ -145,7 +144,7 @@ function PlayerBoat:update(dt)
 	end
 	
 	if self.health < 1 then
-		gameState = 'gameover'
+		GameState:SetState(stGameOver)
 		goscore.text = playerScore .. "pts"
 		godeaths.text = "You destroyed " .. (wsTotalSpawned - wsTotalSurvived) .. " objects"
 		if wsTotalSurvived == 0 then

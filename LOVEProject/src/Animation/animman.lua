@@ -1,8 +1,5 @@
----Animation Manager
-
+---animman.lua
 require (RootCodePath .. 'Animation/anim')
-
-local class = require 'middleclass/middleclass'
 AnimationManager = class('AnimationManager')
 
 function AnimationManager:initialize()

@@ -1,10 +1,10 @@
 -- turret.lua
 require (RootCodePath .. 'Entities/Projectiles/projEnemyBasic')
-local class = require 'middleclass/middleclass'
+
 Turret = class('Turret',Entity)
 Turret.static.name = "Turret"
 function Turret:load()
-	self.tGun = love.graphics.newImage("tPlayerBoat/ship_gun_prim.png")
+	self.tGun = love.graphics.newImage(RootTexturePath .."tPlayerBoat/ship_gun_prim.png")
 	self.tGunOrigin = Vector:new(7,16)
 	self.firerate = 0.5
 	self.cooldown = self.firerate

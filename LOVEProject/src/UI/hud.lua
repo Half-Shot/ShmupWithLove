@@ -4,49 +4,51 @@ hitCombo = 0
 shouldDrawFPS = true
 bestHitCombo = 0
 function loadHUD()
-	tCross = love.graphics.newImage( RootTexturePath .."tCrosshair/cross.png")
-	tCrossHit = love.graphics.newImage( RootTexturePath .. "tCrosshair/cross-hit.png")
-  tCurCross = tCross
-	crossScale = 0.15
-  hitComboScale = 0.25
-  mx = 0
-  my = 0
-  
-  --Main Game UI
   hudStyle = MUI_parseSheet("css/hud.css")
-  hudForm = MUIForm(love.graphics,"HUDForm")
-  
-  hudWeaponOneText = CLabel(hudForm,"WeaponOneLabel","WeaponOneLabel",love.graphics.newFont(24))
-  table.insert(hudForm.children,hudWeaponOneText)
-  hudWeaponTwoText = CLabel(hudForm,"WeaponTwoLabel","WeaponOneLabel",love.graphics.newFont(24))
-  table.insert(hudForm.children,hudWeaponTwoText)
-  hudWeaponThreeText = CLabel(hudForm,"WeaponThreeLabel","WeaponOneLabel",love.graphics.newFont(24))
-  table.insert(hudForm.children,hudWeaponThreeText)
-  hudWeaponFourText = CLabel(hudForm,"WeaponFourLabel","WeaponOneLabel",love.graphics.newFont(24))
-  table.insert(hudForm.children,hudWeaponFourText)
-  
-  
-  hudWeaponOneIcon = CImage(hudForm,"WeaponOneIcon")
-  table.insert(hudForm.children,hudWeaponOneIcon)
-  hudWeaponTwoIcon = CImage(hudForm,"WeaponTwoIcon")
-  table.insert(hudForm.children,hudWeaponTwoIcon)
-  hudWeaponThreeIcon = CImage(hudForm,"WeaponThreeIcon")
-  table.insert(hudForm.children,hudWeaponThreeIcon)
-  hudWeaponFourIcon = CImage(hudForm,"WeaponFourIcon")
-  table.insert(hudForm.children,hudWeaponFourIcon)
-  
-  hudScore = CLabel(hudForm,"Score","--------",scoreFont)
-  hudScore.scalex = 0.25
-  hudScore.scaley = 0.25
-  
-  hudHitCounter = CLabel(hudForm,"Hits",0,scoreFont)
-  table.insert(hudForm.children,hudScore)
-  table.insert(hudForm.children,hudHitCounter)
-  
-  hudFPS = CLabel(hudForm,"FpsCounter",0)
-  table.insert(hudForm.children,hudFPS)
-  
-  hudForm:ApplyStylesheet(hudStyle)
+  if hudForm == nil then
+    tCross = love.graphics.newImage( RootTexturePath .."tCrosshair/cross.png")
+    tCrossHit = love.graphics.newImage( RootTexturePath .. "tCrosshair/cross-hit.png")
+    tCurCross = tCross
+    crossScale = 0.15
+    hitComboScale = 0.25
+    mx = 0
+    my = 0
+    
+    --Main Game UI
+    hudForm = MUIForm(love.graphics,"HUDForm")
+    
+    hudWeaponOneText = CLabel(hudForm,"WeaponOneLabel","WeaponOneLabel",love.graphics.newFont(24))
+    table.insert(hudForm.children,hudWeaponOneText)
+    hudWeaponTwoText = CLabel(hudForm,"WeaponTwoLabel","WeaponOneLabel",love.graphics.newFont(24))
+    table.insert(hudForm.children,hudWeaponTwoText)
+    hudWeaponThreeText = CLabel(hudForm,"WeaponThreeLabel","WeaponOneLabel",love.graphics.newFont(24))
+    table.insert(hudForm.children,hudWeaponThreeText)
+    hudWeaponFourText = CLabel(hudForm,"WeaponFourLabel","WeaponOneLabel",love.graphics.newFont(24))
+    table.insert(hudForm.children,hudWeaponFourText)
+    
+    
+    hudWeaponOneIcon = CImage(hudForm,"WeaponOneIcon")
+    table.insert(hudForm.children,hudWeaponOneIcon)
+    hudWeaponTwoIcon = CImage(hudForm,"WeaponTwoIcon")
+    table.insert(hudForm.children,hudWeaponTwoIcon)
+    hudWeaponThreeIcon = CImage(hudForm,"WeaponThreeIcon")
+    table.insert(hudForm.children,hudWeaponThreeIcon)
+    hudWeaponFourIcon = CImage(hudForm,"WeaponFourIcon")
+    table.insert(hudForm.children,hudWeaponFourIcon)
+    
+    hudScore = CLabel(hudForm,"Score","--------",scoreFont)
+    hudScore.scalex = 0.25
+    hudScore.scaley = 0.25
+    
+    hudHitCounter = CLabel(hudForm,"Hits",0,scoreFont)
+    table.insert(hudForm.children,hudScore)
+    table.insert(hudForm.children,hudHitCounter)
+    
+    hudFPS = CLabel(hudForm,"FpsCounter",0)
+    table.insert(hudForm.children,hudFPS)
+    
+    hudForm:ApplyStylesheet(hudStyle)
+  end
   
 end
 

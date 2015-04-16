@@ -1,6 +1,6 @@
 -- projectile.lua
 require (RootShadersPath .. 'projbolt')
-local class = require 'middleclass/middleclass'
+
 Projectile = class('Projectile',Entity)
 
 function Projectile:initialize()

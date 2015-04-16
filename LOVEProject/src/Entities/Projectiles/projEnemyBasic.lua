@@ -1,6 +1,6 @@
 --projEnemyBasic.lua
 require (RootCodePath .. 'Entities/Projectiles/projectile')
-local class = require 'middleclass/middleclass'
+
 ProjectileEnemyBasic = class('ProjectileEnemyBasic',Projectile)
 
 function ProjectileEnemyBasic:initialize()
